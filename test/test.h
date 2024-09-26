@@ -1,7 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "../includes/array_op.h"
+#include "../include/array_op.h"
 #include "errno.h"
 #include "stdio.h"
 #include <stdlib.h>

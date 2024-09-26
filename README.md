@@ -12,13 +12,13 @@ This project is a self-contained library implemented in a single header file, of
 ## Usage
 
 1. **Add the header file**:  
-   Place the header file (`array_op.h`) in the `./includes` folder or any other directory where your project stores header files.
+   Place the header file (`array_op.h`) in the `./include` folder or any other directory where your project stores header files.
 
 2. **Compile your program**:  
    When compiling, use the `-I` flag to include the directory where the header file is located.  
    Example:
    ```bash
-   gcc -Wall -I./includes -o my_program my_program.c
+   gcc -Wall -I./include -o my_program my_program.c
    ```
 
 ## Functions
@@ -48,7 +48,7 @@ This function inserts a new element at the end of a dynamically allocated array.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "includes/array_op.h"
+#include "include/array_op.h"
 
 int main() {
     int *nums = NULL;
@@ -93,7 +93,7 @@ This function inserts a new element at a specified index in a dynamically alloca
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "includes/array_op.h"
+#include "include/array_op.h"
 
 int main() {
     size_t len = 4;
@@ -140,7 +140,7 @@ This function deletes an element from a dynamically allocated array at the speci
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "includes/array_op.h"
+#include "include/array_op.h"
 
 int main() {
     size_t len = 4;
@@ -185,7 +185,7 @@ This function retrieves an element from a dynamically allocated array by index.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "includes/array_op.h"
+#include "include/array_op.h"
 
 int main() {
     size_t len = 4;
