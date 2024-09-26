@@ -54,7 +54,9 @@ int main() {
     int *nums = NULL;
     size_t len = 0;
 
-    insert((void **) &nums, &len, &new_num, sizeof(int));
+    int n = 100;
+
+    insert((void **) &nums, &len, &n, sizeof(int));
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -94,11 +96,16 @@ This function inserts a new element at a specified index in a dynamically alloca
 #include "includes/array_op.h"
 
 int main() {
-    size_t len = 3;
-    int nums[] = {1, 2, 4};
-    int new_num = 3;
+    size_t len = 4;
+    int *nums = (int *)calloc(len, len * sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+    nums[3] = 46;
 
-    insert_at((void **) &nums, &len, &new_num, sizeof(int), 2);
+    int n = 100;
+
+    insert_at((void **) &nums, &len, &n, sizeof(int), 2);
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -137,7 +144,11 @@ This function deletes an element from a dynamically allocated array at the speci
 
 int main() {
     size_t len = 4;
-    int nums[] = {1, 2, 3, 4};
+    int *nums = (int *)calloc(len, len * sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+    nums[3] = 46;
 
     delete_at((void **) &nums, &len, sizeof(int), 1);
 
@@ -177,12 +188,18 @@ This function retrieves an element from a dynamically allocated array by index.
 #include "includes/array_op.h"
 
 int main() {
-    size_t len = 3;
-    int nums[] = {10, 20, 30};
+    size_t len = 4;
+    int *nums = (int *)calloc(len, len * sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+    nums[3] = 46;
 
-    int *result = (int *)get((void **) &nums, len, sizeof(int), 1);
+    int index = 2;
+
+    int *result = (int *)get((void **) &nums, len, sizeof(int), index);
     if (result) {
-        printf("Value at index 1: %d\n", *result);
+        printf("Value at index %d: %d\n", index, *result);
     }
 
     return 0;
@@ -190,6 +207,5 @@ int main() {
 ```
 
 #### Licence
+
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
-
-
