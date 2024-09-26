@@ -1,6 +1,6 @@
 # Array Op
 
-This project provides basic functions for manipulating dynamically allocated arrays in C. It includes functions to insert and delete elements at specific indexes, and to retrieve elements from the array.
+This project is a self-contained library implemented in a single header file, offering basic functions for manipulating dynamically allocated arrays in C. It includes functions to insert and delete elements at specific indexes, and to retrieve elements from the array.
 
 ## Features
 
@@ -9,9 +9,21 @@ This project provides basic functions for manipulating dynamically allocated arr
 - **Delete an element from a dynamically allocated array**.
 - **Retrieve an element from a dynamically allocated array by index**.
 
+## Usage
+
+1. **Add the header file**:  
+   Place the header file (`array_op.h`) in the `./includes` folder or any other directory where your project stores header files.
+
+2. **Compile your program**:  
+   When compiling, use the `-I` flag to include the directory where the header file is located.  
+   Example:
+   ```bash
+   gcc -Wall -I./includes -o my_program my_program.c
+   ```
+
 ## Functions
 
-### 1. Insert
+### Insert
 
 ```c
 int insert(void **arr, size_t *len, void *element, size_t element_size);
@@ -36,7 +48,7 @@ This function inserts a new element at the end of a dynamically allocated array.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/array_op.h"
+#include "includes/array_op.h"
 
 int main() {
     int *nums = NULL;
@@ -53,7 +65,7 @@ int main() {
 }
 ```
 
-### 2. Insert At
+### Insert At
 
 ```c
 int insert_at(void **arr, size_t *len, void *element, size_t element_size, size_t at_index);
@@ -79,7 +91,7 @@ This function inserts a new element at a specified index in a dynamically alloca
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/array_op.h"
+#include "includes/array_op.h"
 
 int main() {
     size_t len = 3;
@@ -96,7 +108,7 @@ int main() {
 }
 ```
 
-### 3. Delete At
+### Delete At
 
 ```c
 int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
@@ -121,7 +133,7 @@ This function deletes an element from a dynamically allocated array at the speci
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/array_op.h"
+#include "includes/array_op.h"
 
 int main() {
     size_t len = 4;
@@ -137,7 +149,7 @@ int main() {
 }
 ```
 
-### 4. Get
+### Get
 
 ```c
 void *get(void **arr, size_t len, size_t element_size, size_t at_index);
@@ -162,7 +174,7 @@ This function retrieves an element from a dynamically allocated array by index.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/array_op.h"
+#include "includes/array_op.h"
 
 int main() {
     size_t len = 3;
