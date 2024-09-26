@@ -121,6 +121,7 @@ This function deletes an element from a dynamically allocated array at the speci
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/array_op.h"
 
 int main() {
     size_t len = 4;
@@ -161,6 +162,7 @@ This function retrieves an element from a dynamically allocated array by index.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/array_op.h"
 
 int main() {
     size_t len = 3;
@@ -176,8 +178,6 @@ int main() {
 ```
 
 #### Licence
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
 
-```bash
-This `README.md` provides an overview of the functions, detailed documentation, and examples for how to use each function. You can expand it further based on more functions or specific needs in the project.
-```
+
