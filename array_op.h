@@ -5,17 +5,27 @@
 #include <stdlib.h>
 #include <string.h>
 
-void insert(void **arr, size_t *len, void *element, size_t element_size) {
+// INTERFACE
+int insert(void **arr, size_t *len, void *element, size_t element_size);
+int insert_at(void **arr, size_t *len, void *element, size_t element_size,
+              size_t at_index);
+int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
+void *get(void **arr, size_t len, size_t element_size, size_t at_index);
+
+// IMPLEMENTATION
+int insert(void **arr, size_t *len, void *element, size_t element_size) {
   size_t arr_size = (*len) * element_size;
 
   *arr = realloc(*arr, arr_size + element_size);
   if (*arr == NULL) {
     printf("error allocating new arr memory\n");
-    return;
+    return 1;
   }
 
   memcpy((char *)(*arr) + arr_size, element, element_size);
   ++(*len);
+
+  return 0;
 }
 
 int insert_at(void **arr, size_t *len, void *element, size_t element_size,
@@ -83,7 +93,7 @@ void *get(void **arr, size_t len, size_t element_size, size_t at_index) {
     return NULL;
   }
 
-  return (char *)arr + (at_index * element_size);
+  return (char *)*arr + (at_index * element_size);
 }
 
 #endif // ARRAY_OP_H
