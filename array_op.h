@@ -14,9 +14,6 @@ void insert(void **arr, size_t *len, void *element, size_t element_size) {
     return;
   }
 
-  // pointer arithmetic
-  // start + (make space) => new start for new data
-  // start at (*arr) + arr_size -> new start (insert new data here)
   memcpy((char *)(*arr) + arr_size, element, element_size);
   ++(*len);
 }
@@ -78,6 +75,15 @@ int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
   (*len)--;
 
   return 0;
+}
+
+void *get(void **arr, size_t len, size_t element_size, size_t at_index) {
+  if (at_index >= len) {
+    printf("error index is out of bounds.\n");
+    return NULL;
+  }
+
+  return (char *)arr + (at_index * element_size);
 }
 
 #endif // ARRAY_OP_H
