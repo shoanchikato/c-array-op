@@ -1,2 +1,4 @@
 .vscode
 /bin
+app
+main.c
