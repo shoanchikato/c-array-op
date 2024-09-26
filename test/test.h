@@ -1,8 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "../include/array_op.h"
-#include "../person.h"
+#include "../includes/array_op.h"
 #include "errno.h"
 #include "stdio.h"
 #include <stdlib.h>
