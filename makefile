@@ -4,7 +4,6 @@ t: # run tests
 lib:
 	gcc -Wall -I./include -o ./bin/app.o -c array_op.h
 
-
 asm:
 	gcc -Wall -S -I./include -o ./bin/app.s array_op.h
 
