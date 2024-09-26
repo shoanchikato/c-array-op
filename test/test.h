@@ -1,9 +1,9 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "array_op.h"
+#include "../include/array_op.h"
+#include "../person.h"
 #include "errno.h"
-#include "person.h"
 #include "stdio.h"
 #include <stdlib.h>
 
@@ -111,7 +111,7 @@ int test_insert_at_element() {
   nums[1] = 24;
   nums[2] = 35;
   nums[3] = 46;
-  
+
   int n1 = 100;
 
   int expect[5] = {13, 24, 35, 100, 46};
@@ -148,18 +148,19 @@ int test_delete_at_len() {
   nums[2] = 3;
   nums[3] = 4;
 
-  size_t expect = 3;
+  size_t expect[4] = {3, 2, 1, 0};
 
   // act
-  int n = delete_at((void **)&nums, &got, sizeof(int), 0);
-  if (n != 0) {
-    return unexpected_error(test_name);
-  }
-
-  // assert
-  if (expect != got) {
-    printf("%s: expect %lu, got %lu\n", test_name, expect, got);
-    return EXIT_FAILURE;
+  for (int i = 0; i < 4; i++) {
+    int n = delete_at((void **)&nums, &got, sizeof(int), 0);
+    if (n != 0) {
+      return unexpected_error(test_name);
+    }
+    // assert
+    if (expect[i] != got) {
+      printf("%s: expect %lu, got %lu\n", test_name, expect[i], got);
+      return EXIT_FAILURE;
+    }
   }
 
   free(nums);
@@ -240,7 +241,7 @@ int exec() {
   n = test_insert_len();
   if (n != 0)
     return EXIT_FAILURE;
-  
+
   n = test_insert_at_element();
   if (n != 0)
     return EXIT_FAILURE;
