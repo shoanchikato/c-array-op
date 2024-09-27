@@ -111,6 +111,7 @@ int main() {
         printf("%d ", nums[i]);
     }
 
+    free(nums);
     return 0;
 }
 ```
@@ -156,6 +157,7 @@ int main() {
         printf("%d ", nums[i]);
     }
 
+    free(nums);
     return 0;
 }
 ```
@@ -202,6 +204,7 @@ int main() {
         printf("Value at index %d: %d\n", index, *result);
     }
 
+    free(nums);
     return 0;
 }
 ```
