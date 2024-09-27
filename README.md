@@ -209,6 +209,52 @@ int main() {
 }
 ```
 
+### Push Front
+
+```c
+int push_front(void **arr, size_t *len, void *element, size_t element_size);
+```
+
+This function inserts an element at the front of a dynamically allocated array.
+
+#### Parameters
+
+- `void **arr`: A pointer to the dynamically allocated array.
+- `size_t *len`: A pointer to the length of the array.
+- `void *element`: A pointer to the element to be inserted.
+- `size_t element_size`: The size of each element in the array (in bytes).
+
+#### Return Value
+
+- Returns `0` on success.
+- Returns `1` if an error occurs (e.g., memory allocation failure).
+
+#### Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "include/array_op.h"
+
+int main() {
+    size_t len = 3;
+    int *nums = (int *)calloc(len, sizeof(int));
+    nums[0] = 24;
+    nums[1] = 35;
+    nums[2] = 46;
+
+    int new_num = 13;
+    push_front((void **)&nums, &len, &new_num, sizeof(int));
+
+    for (size_t i = 0; i < len; i++) {
+        printf("%d ", nums[i]);
+    }
+
+    free(nums);
+    return 0;
+}
+```
+
 #### Licence
 
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
