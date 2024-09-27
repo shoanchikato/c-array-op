@@ -12,6 +12,11 @@ int insert_at(void **arr, size_t *len, void *element, size_t element_size,
 int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
 void *get(void **arr, size_t len, size_t element_size, size_t at_index);
 
+int push_front(void **arr, size_t *len, void *element, size_t element_size);
+int push_back(void **arr, size_t *len, void *element, size_t element_size);
+void *pop_front(void **arr, size_t *len, size_t element_size);
+void *pop_back(void **arr, size_t *len, size_t element_size);
+
 // IMPLEMENTATION
 int insert(void **arr, size_t *len, void *element, size_t element_size) {
   size_t arr_size = (*len) * element_size;
@@ -38,7 +43,7 @@ int insert_at(void **arr, size_t *len, void *element, size_t element_size,
 
   void *dst = malloc(element_size * (*len + 1));
   if (dst == NULL) {
-    printf("error allocating memory for dst in insert_at");
+    printf("error allocating memory for dst in insert_at\n");
     return 1;
   }
 
@@ -68,7 +73,7 @@ int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
 
   void *dst = malloc(element_size * (*len - 1));
   if (dst == NULL) {
-    printf("error allocating memory for dst in insert_at");
+    printf("error allocating memory for dst in insert_at\n");
     return 1;
   }
 
@@ -94,6 +99,52 @@ void *get(void **arr, size_t len, size_t element_size, size_t at_index) {
   }
 
   return (char *)*arr + (at_index * element_size);
+}
+
+int push_front(void **arr, size_t *len, void *element, size_t element_size) {
+  size_t at_index = 0;
+
+  return insert_at(arr, len, element, element_size, at_index);
+}
+
+int push_back(void **arr, size_t *len, void *element, size_t element_size) {
+  return insert(arr, len, element, element_size);
+}
+
+void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
+                                  size_t at_index) {
+  void *result = get(arr, *len, element_size, at_index);
+  if (result == NULL) {
+    return result;
+  }
+
+  void *element = malloc(element_size);
+  if (element == NULL) {
+    printf("failed to allocate memory for element\n");
+    return NULL;
+  }
+
+  if (result != NULL) {
+
+    memcpy(element, result, element_size);
+    delete_at(arr, len, element_size, at_index);
+
+    return element;
+  }
+
+  return NULL;
+}
+
+void *pop_front(void **arr, size_t *len, size_t element_size) {
+  size_t at_index = 0;
+
+  return _save_element_before_delete(arr, len, element_size, at_index);
+}
+
+void *pop_back(void **arr, size_t *len, size_t element_size) {
+  size_t at_index = *len - 1;
+
+  return _save_element_before_delete(arr, len, element_size, at_index);
 }
 
 #endif // ARRAY_OP_H
