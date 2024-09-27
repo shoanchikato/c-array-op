@@ -4,13 +4,16 @@ t: # run tests
 run:
 	gcc -Wall -I./include -o ./bin/app main.c && ./bin/app
 
+build:
+	gcc -Wall -I./include -o ./bin/app main.c
+
 lib:
-	gcc -Wall -I./include -o ./bin/app.o -c array_op.h
+	gcc -Wall -I./include -o ./bin/array_op.o -c ./include/array_op.h
 
 asm:
-	gcc -Wall -S -I./include -o ./bin/app.s array_op.h
+	gcc -Wall -S -I./include -o ./bin/array_op.s main.c
 
 debug:
-	gcc -Wall -g -I./include -o ./bin/app array_op.h
+	gcc -Wall -g -I./include -o ./bin/app main.c && ./bin/app
 
 
