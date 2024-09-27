@@ -255,6 +255,52 @@ int main() {
 }
 ```
 
+### Push Back
+
+```c
+int push_back(void **arr, size_t *len, void *element, size_t element_size);
+```
+
+This function appends an element to the end of a dynamically allocated array, identical to [insert](#insert).
+
+#### Parameters
+
+- `void **arr`: A pointer to the dynamically allocated array.
+- `size_t *len`: A pointer to the length of the array.
+- `void *element`: A pointer to the element to be inserted.
+- `size_t element_size`: The size of each element in the array (in bytes).
+
+#### Return Value
+
+- Returns `0` on success.
+- Returns `1` if an error occurs (e.g., memory allocation failure).
+
+#### Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "include/array_op.h"
+
+int main() {
+    size_t len = 3;
+    int *nums = (int *)calloc(len, sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+
+    int new_num = 46;
+    push_back((void **)&nums, &len, &new_num, sizeof(int));
+
+    for (size_t i = 0; i < len; i++) {
+        printf("%d ", nums[i]);
+    }
+
+    free(nums);
+    return 0;
+}
+```
+
 #### Licence
 
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
