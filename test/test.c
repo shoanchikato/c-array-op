@@ -5,10 +5,10 @@ int main() {
   int result = exec();
 
   if (result != 0) {
-    printf("tests failed.\n");
+    printf("\ntests failed.\n");
     return EXIT_FAILURE;
   }
 
-  printf("tests were successful.\n");
+  printf("\ntests were successful.\n");
   return EXIT_SUCCESS;
 }
