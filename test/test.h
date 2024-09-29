@@ -11,6 +11,18 @@ int unexpected_error(const char *test_name) {
   return EXIT_FAILURE;
 }
 
+typedef int (*func)();
+
+int test_for_each(func tests[], size_t len) {
+  int n = 0;
+  for (int i = 0; i < len; i++) {
+      n = tests[i]();
+      if (n != 0) return EXIT_FAILURE;
+  }
+
+  return n;
+}
+
 int test_insert_len();
 int test_insert_element();
 int test_insert_at_len();
@@ -28,6 +40,7 @@ int test_insert_len() {
   // arrange
   const char *test_name = "test_insert_len";
   printf("running %s\n", test_name);
+
   int *nums = NULL;
   int n1 = 100;
 
@@ -54,6 +67,7 @@ int test_insert_element() {
   // arrange
   const char *test_name = "test_insert_element";
   printf("running %s\n", test_name);
+
   int *nums = NULL;
   int expect = 100;
 
@@ -80,6 +94,7 @@ int test_insert_at_len() {
   // arrange
   const char *test_name = "test_insert_at_len";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -113,6 +128,7 @@ int test_insert_at_element() {
   // arrange
   const char *test_name = "test_insert_at_element";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -150,6 +166,7 @@ int test_delete_at_len() {
   // arrange
   const char *test_name = "test_delete_at_len";
   printf("running %s\n", test_name);
+
   size_t got = 4;
   int *nums = (int *)calloc(got, got * sizeof(int));
   nums[0] = 1;
@@ -180,6 +197,7 @@ int test_delete_at_element() {
   // arrange
   const char *test_name = "test_delete_at_element";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -214,6 +232,7 @@ int test_get_element() {
   // arrange
   const char *test_name = "test_get_element";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -246,6 +265,7 @@ int test_push_front() {
   // arrange
   const char *test_name = "test_push_front";
   printf("running %s\n", test_name);
+
   int *nums = NULL;
   size_t len = 0;
   int value[] = {13, 24, 35, 46};
@@ -281,6 +301,7 @@ int test_push_back() {
   // arrange
   const char *test_name = "test_push_back";
   printf("running %s\n", test_name);
+
   int *nums = NULL;
   size_t len = 0;
   int value[] = {13, 24, 35, 46};
@@ -316,6 +337,7 @@ int test_pop_front() {
   // arrange
   const char *test_name = "test_pop_front";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -357,6 +379,7 @@ int test_pop_back() {
   // arrange
   const char *test_name = "test_pop_back";
   printf("running %s\n", test_name);
+
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -364,7 +387,7 @@ int test_pop_back() {
   nums[2] = 35;
   nums[3] = 46;
 
-  int expect [] = {46, 345, 24, 13};
+  int expect [] = {46, 35, 24, 13};
   size_t expect_len[] = {3, 2, 1, 0}; 
 
   int *got = 0;
@@ -395,53 +418,27 @@ int test_pop_back() {
 }
 
 int exec() {
-  int n = 0;
 
-  n = test_insert_element();
-  if (n != 0)
-    return EXIT_FAILURE;
+  func tests[] = {
+    test_insert_len,
+    test_insert_element,
+    test_insert_at_len,
+    test_insert_at_element,
+    test_delete_at_len,
+    test_delete_at_element,
+    test_get_element,
+    
+    test_push_front,
+    test_push_back,
+    test_pop_front,
+    test_pop_back,
+  };
 
-  n = test_insert_len();
-  if (n != 0)
-    return EXIT_FAILURE;
+  size_t len = sizeof(tests) / sizeof(tests[0]);
 
-  n = test_insert_at_element();
-  if (n != 0)
-    return EXIT_FAILURE;
+  int n = test_for_each(tests, len);
 
-  n = test_insert_at_len();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_delete_at_len();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_delete_at_element();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_get_element();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_push_front();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_push_back();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_pop_front();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  n = test_pop_back();
-  if (n != 0)
-    return EXIT_FAILURE;
-
-  return EXIT_SUCCESS;
+  return n;
 }
 
 #endif // TEST_H
