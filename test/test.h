@@ -27,6 +27,7 @@ int test_pop_back();
 int test_insert_len() {
   // arrange
   const char *test_name = "test_insert_len";
+  printf("running %s\n", test_name);
   int *nums = NULL;
   int n1 = 100;
 
@@ -52,6 +53,7 @@ int test_insert_len() {
 int test_insert_element() {
   // arrange
   const char *test_name = "test_insert_element";
+  printf("running %s\n", test_name);
   int *nums = NULL;
   int expect = 100;
 
@@ -77,6 +79,7 @@ int test_insert_element() {
 int test_insert_at_len() {
   // arrange
   const char *test_name = "test_insert_at_len";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -109,6 +112,7 @@ int test_insert_at_len() {
 int test_insert_at_element() {
   // arrange
   const char *test_name = "test_insert_at_element";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -145,6 +149,7 @@ int test_insert_at_element() {
 int test_delete_at_len() {
   // arrange
   const char *test_name = "test_delete_at_len";
+  printf("running %s\n", test_name);
   size_t got = 4;
   int *nums = (int *)calloc(got, got * sizeof(int));
   nums[0] = 1;
@@ -174,6 +179,7 @@ int test_delete_at_len() {
 int test_delete_at_element() {
   // arrange
   const char *test_name = "test_delete_at_element";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -207,6 +213,7 @@ int test_delete_at_element() {
 int test_get_element() {
   // arrange
   const char *test_name = "test_get_element";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -238,6 +245,7 @@ int test_get_element() {
 int test_push_front() {
   // arrange
   const char *test_name = "test_push_front";
+  printf("running %s\n", test_name);
   int *nums = NULL;
   size_t len = 0;
   int value[] = {13, 24, 35, 46};
@@ -272,6 +280,7 @@ int test_push_front() {
 int test_push_back() {
   // arrange
   const char *test_name = "test_push_back";
+  printf("running %s\n", test_name);
   int *nums = NULL;
   size_t len = 0;
   int value[] = {13, 24, 35, 46};
@@ -306,6 +315,7 @@ int test_push_back() {
 int test_pop_front() {
   // arrange
   const char *test_name = "test_pop_front";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -346,6 +356,7 @@ int test_pop_front() {
 int test_pop_back() {
   // arrange
   const char *test_name = "test_pop_back";
+  printf("running %s\n", test_name);
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 13;
@@ -353,7 +364,7 @@ int test_pop_back() {
   nums[2] = 35;
   nums[3] = 46;
 
-  int expect [] = {46, 35, 24, 13};
+  int expect [] = {46, 345, 24, 13};
   size_t expect_len[] = {3, 2, 1, 0}; 
 
   int *got = 0;
