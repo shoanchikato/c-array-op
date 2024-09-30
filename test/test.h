@@ -248,7 +248,7 @@ int test_get_element() {
   nums[3] = 46;
 
   int expect[4] = {13, 24, 35, 46};
-  int *got = 0;
+  int *got = NULL;
 
   for (int i = 0; i < 4; i++) {
     // act
@@ -355,7 +355,7 @@ int test_pop_front() {
   int expect[] = {13, 24, 35, 46};
   size_t expect_len[] = {3, 2, 1, 0}; 
 
-  int *got = 0;
+  int *got = NULL;
 
   // act
   for (int i = 0; i < 4; i++) {
@@ -397,7 +397,7 @@ int test_pop_back() {
   int expect [] = {46, 35, 24, 13};
   size_t expect_len[] = {3, 2, 1, 0}; 
 
-  int *got = 0;
+  int *got = NULL;
 
   // act
   for (int i = 0; i < 4; i++) {
