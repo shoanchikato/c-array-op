@@ -5,6 +5,7 @@
 #include "errno.h"
 #include "stdio.h"
 #include <stdlib.h>
+#include <sys/_types/_size_t.h>
 
 // INTERFACE
 
@@ -73,12 +74,13 @@ int test_insert_element() {
   printf("running %s\n", test_name);
 
   int *nums = NULL;
+  size_t len = 0;
+  int n1 = 100;
+
   int expect = 100;
 
-  size_t len = 0;
-
   // act
-  int n = insert((void **)&nums, &len, &expect, sizeof(int));
+  int n = insert((void **)&nums, &len, &n1, sizeof(int));
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -170,14 +172,15 @@ int test_delete_at_len() {
   // arrange
   const char *test_name = "test_delete_at_len";
   printf("running %s\n", test_name);
-
-  size_t got = 4;
-  int *nums = (int *)calloc(got, got * sizeof(int));
+  
+  size_t len = 4;
+  int *nums = (int *)calloc(len, len * sizeof(int));
   nums[0] = 1;
   nums[1] = 2;
   nums[2] = 3;
   nums[3] = 4;
 
+  size_t got = len;
   size_t expect[4] = {3, 2, 1, 0};
 
   // act
@@ -349,7 +352,7 @@ int test_pop_front() {
   nums[2] = 35;
   nums[3] = 46;
 
-  int expect[4] = {13, 24, 35, 46};
+  int expect[] = {13, 24, 35, 46};
   size_t expect_len[] = {3, 2, 1, 0}; 
 
   int *got = 0;
