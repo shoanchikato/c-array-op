@@ -6,6 +6,8 @@
 #include "stdio.h"
 #include <stdlib.h>
 
+// INTERFACE
+
 int unexpected_error(const char *test_name) {
   printf("unexpected error in: %s\n", test_name);
   return EXIT_FAILURE;
@@ -35,6 +37,8 @@ int test_push_front();
 int test_push_back();
 int test_pop_front();
 int test_pop_back();
+
+// IMPLEMENTATION
 
 int test_insert_len() {
   // arrange
