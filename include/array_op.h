@@ -6,19 +6,19 @@
 #include <string.h>
 
 // INTERFACE
-int insert(void **arr, size_t *len, void *element, size_t element_size);
-int insert_at(void **arr, size_t *len, void *element, size_t element_size,
+int array_op_insert(void **arr, size_t *len, void *element, size_t element_size);
+int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size,
               size_t at_index);
-int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
-void *get(void **arr, size_t len, size_t element_size, size_t at_index);
+int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
+void *array_op_get(void **arr, size_t len, size_t element_size, size_t at_index);
 
-int push_front(void **arr, size_t *len, void *element, size_t element_size);
-int push_back(void **arr, size_t *len, void *element, size_t element_size);
-void *pop_front(void **arr, size_t *len, size_t element_size);
-void *pop_back(void **arr, size_t *len, size_t element_size);
+int array_op_push_front(void **arr, size_t *len, void *element, size_t element_size);
+int array_op_push_back(void **arr, size_t *len, void *element, size_t element_size);
+void *array_op_pop_front(void **arr, size_t *len, size_t element_size);
+void *array_op_pop_back(void **arr, size_t *len, size_t element_size);
 
 // IMPLEMENTATION
-int insert(void **arr, size_t *len, void *element, size_t element_size) {
+int array_op_insert(void **arr, size_t *len, void *element, size_t element_size) {
   size_t arr_size = (*len) * element_size;
 
   *arr = realloc(*arr, arr_size + element_size);
@@ -33,7 +33,7 @@ int insert(void **arr, size_t *len, void *element, size_t element_size) {
   return 0;
 }
 
-int insert_at(void **arr, size_t *len, void *element, size_t element_size,
+int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size,
               size_t at_index) {
 
   if (at_index >= *len + 1) {
@@ -43,7 +43,7 @@ int insert_at(void **arr, size_t *len, void *element, size_t element_size,
 
   void *dst = malloc(element_size * (*len + 1));
   if (dst == NULL) {
-    printf("error allocating memory for dst in insert_at\n");
+    printf("error allocating memory for dst in array_op_insert_at\n");
     return 1;
   }
 
@@ -64,7 +64,7 @@ int insert_at(void **arr, size_t *len, void *element, size_t element_size,
   return 0;
 }
 
-int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
+int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
 
   if (at_index >= *len) {
     printf("error index is out of bounds.\n");
@@ -73,7 +73,7 @@ int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
 
   void *dst = malloc(element_size * (*len - 1));
   if (dst == NULL) {
-    printf("error allocating memory for dst in insert_at\n");
+    printf("error allocating memory for dst in array_op_insert_at\n");
     return 1;
   }
 
@@ -92,7 +92,7 @@ int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
   return 0;
 }
 
-void *get(void **arr, size_t len, size_t element_size, size_t at_index) {
+void *array_op_get(void **arr, size_t len, size_t element_size, size_t at_index) {
   if (at_index >= len) {
     printf("error index is out of bounds.\n");
     return NULL;
@@ -101,19 +101,19 @@ void *get(void **arr, size_t len, size_t element_size, size_t at_index) {
   return (char *)*arr + (at_index * element_size);
 }
 
-int push_front(void **arr, size_t *len, void *element, size_t element_size) {
+int array_op_push_front(void **arr, size_t *len, void *element, size_t element_size) {
   size_t at_index = 0;
 
-  return insert_at(arr, len, element, element_size, at_index);
+  return array_op_insert_at(arr, len, element, element_size, at_index);
 }
 
-int push_back(void **arr, size_t *len, void *element, size_t element_size) {
-  return insert(arr, len, element, element_size);
+int array_op_push_back(void **arr, size_t *len, void *element, size_t element_size) {
+  return array_op_insert(arr, len, element, element_size);
 }
 
 void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
                                   size_t at_index) {
-  void *result = get(arr, *len, element_size, at_index);
+  void *result = array_op_get(arr, *len, element_size, at_index);
   if (result == NULL) {
     return result;
   }
@@ -127,7 +127,7 @@ void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
   if (result != NULL) {
 
     memcpy(element, result, element_size);
-    delete_at(arr, len, element_size, at_index);
+    array_op_delete_at(arr, len, element_size, at_index);
 
     return element;
   }
@@ -135,13 +135,13 @@ void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
   return NULL;
 }
 
-void *pop_front(void **arr, size_t *len, size_t element_size) {
+void *array_op_pop_front(void **arr, size_t *len, size_t element_size) {
   size_t at_index = 0;
 
   return _save_element_before_delete(arr, len, element_size, at_index);
 }
 
-void *pop_back(void **arr, size_t *len, size_t element_size) {
+void *array_op_pop_back(void **arr, size_t *len, size_t element_size) {
   size_t at_index = *len - 1;
 
   return _save_element_before_delete(arr, len, element_size, at_index);

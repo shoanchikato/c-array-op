@@ -33,10 +33,10 @@ int test_delete_at_len();
 int test_delete_at_element();
 int test_get_element();
 
-int test_push_front();
-int test_push_back();
-int test_pop_front();
-int test_pop_back();
+int test_array_op_push_front();
+int test_array_op_push_back();
+int test_array_op_pop_front();
+int test_array_op_pop_back();
 
 // IMPLEMENTATION
 
@@ -52,7 +52,7 @@ int test_insert_len() {
   size_t expect = 1;
 
   // act
-  int n = insert((void **)&nums, &got, &n1, sizeof(int));
+  int n = array_op_insert((void **)&nums, &got, &n1, sizeof(int));
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -79,7 +79,7 @@ int test_insert_element() {
   int expect = 100;
 
   // act
-  int n = insert((void **)&nums, &len, &n1, sizeof(int));
+  int n = array_op_insert((void **)&nums, &len, &n1, sizeof(int));
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -114,7 +114,7 @@ int test_insert_at_len() {
   size_t got = len;
 
   // act
-  int n = insert_at((void **)&nums, &got, &n1, sizeof(int), at_index);
+  int n = array_op_insert_at((void **)&nums, &got, &n1, sizeof(int), at_index);
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -147,7 +147,7 @@ int test_insert_at_element() {
   size_t at_index = 3;
 
   // act
-  int n = insert_at((void **)&nums, &len, &n1, sizeof(int), at_index);
+  int n = array_op_insert_at((void **)&nums, &len, &n1, sizeof(int), at_index);
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -184,7 +184,7 @@ int test_delete_at_len() {
 
   // act
   for (int i = 0; i < 4; i++) {
-    int n = delete_at((void **)&nums, &got, sizeof(int), 0);
+    int n = array_op_delete_at((void **)&nums, &got, sizeof(int), 0);
     if (n != 0) {
       return unexpected_error(test_name);
     }
@@ -215,7 +215,7 @@ int test_delete_at_element() {
   int got = 0;
 
   // act
-  int n = delete_at((void **)&nums, &len, sizeof(int), 0);
+  int n = array_op_delete_at((void **)&nums, &len, sizeof(int), 0);
   if (n != 0) {
     return unexpected_error(test_name);
   }
@@ -251,7 +251,7 @@ int test_get_element() {
 
   for (int i = 0; i < 4; i++) {
     // act
-    got = (int *)get((void **)&nums, len, sizeof(int), i);
+    got = (int *)array_op_get((void **)&nums, len, sizeof(int), i);
     if (got == NULL) {
       return unexpected_error(test_name);
     }
@@ -267,7 +267,7 @@ int test_get_element() {
   return EXIT_SUCCESS;
 }
 
-int test_push_front() {
+int test_array_op_push_front() {
   // arrange
   const char *test_name = "test_push_front";
   fprintf(stderr, "running %s\n", test_name);
@@ -281,7 +281,7 @@ int test_push_front() {
 
   // act
   for (int i = 0; i < 4; i++) {
-    int n = push_front((void **)&nums, &len, &value[i], sizeof(int));
+    int n = array_op_push_front((void **)&nums, &len, &value[i], sizeof(int));
     if (n != 0) {
       return unexpected_error(test_name);
     }
@@ -303,7 +303,7 @@ int test_push_front() {
   return EXIT_SUCCESS;
 }
 
-int test_push_back() {
+int test_array_op_push_back() {
   // arrange
   const char *test_name = "test_push_back";
   fprintf(stderr, "running %s\n", test_name);
@@ -317,7 +317,7 @@ int test_push_back() {
 
   // act
   for (int i = 0; i < 4; i++) {
-    int n = push_back((void **)&nums, &len, &value[i], sizeof(int));
+    int n = array_op_push_back((void **)&nums, &len, &value[i], sizeof(int));
     if (n != 0) {
       return unexpected_error(test_name);
     }
@@ -339,7 +339,7 @@ int test_push_back() {
   return EXIT_SUCCESS;
 }
 
-int test_pop_front() {
+int test_array_op_pop_front() {
   // arrange
   const char *test_name = "test_pop_front";
   fprintf(stderr, "running %s\n", test_name);
@@ -358,7 +358,7 @@ int test_pop_front() {
 
   // act
   for (int i = 0; i < 4; i++) {
-    got = (int*) pop_front((void **)&nums, &len, sizeof(int));
+    got = (int*) array_op_pop_front((void **)&nums, &len, sizeof(int));
     if (got == NULL) {
       return unexpected_error(test_name);
     }
@@ -381,7 +381,7 @@ int test_pop_front() {
   return EXIT_SUCCESS;
 }
 
-int test_pop_back() {
+int test_array_op_pop_back() {
   // arrange
   const char *test_name = "test_pop_back";
   fprintf(stderr, "running %s\n", test_name);
@@ -400,7 +400,7 @@ int test_pop_back() {
 
   // act
   for (int i = 0; i < 4; i++) {
-    got = (int*) pop_back((void **)&nums, &len, sizeof(int));
+    got = (int*) array_op_pop_back((void **)&nums, &len, sizeof(int));
     if (got == NULL) {
       return unexpected_error(test_name);
     }
@@ -434,10 +434,10 @@ int exec() {
     test_delete_at_element,
     test_get_element,
     
-    test_push_front,
-    test_push_back,
-    test_pop_front,
-    test_pop_back,
+    test_array_op_push_front,
+    test_array_op_push_back,
+    test_array_op_pop_front,
+    test_array_op_pop_back,
   };
 
   size_t len = sizeof(tests) / sizeof(tests[0]);

@@ -30,7 +30,7 @@ This project is a self-contained library implemented in a single header file, of
 ### Insert
 
 ```c
-int insert(void **arr, size_t *len, void *element, size_t element_size);
+int array_op_insert(void **arr, size_t *len, void *element, size_t element_size);
 ```
 
 This function inserts a new element at the end of a dynamically allocated array.
@@ -60,7 +60,7 @@ int main() {
 
     int n = 100;
 
-    insert((void **) &nums, &len, &n, sizeof(int));
+    array_op_insert((void **) &nums, &len, &n, sizeof(int));
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -74,7 +74,7 @@ int main() {
 ### Insert At
 
 ```c
-int insert_at(void **arr, size_t *len, void *element, size_t element_size, size_t at_index);
+int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size, size_t at_index);
 ```
 
 This function inserts a new element at a specified index in a dynamically allocated array.
@@ -109,7 +109,7 @@ int main() {
 
     int n = 100;
 
-    insert_at((void **) &nums, &len, &n, sizeof(int), 2);
+    array_op_insert_at((void **) &nums, &len, &n, sizeof(int), 2);
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -123,7 +123,7 @@ int main() {
 ### Delete At
 
 ```c
-int delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
+int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_index);
 ```
 
 This function deletes an element from a dynamically allocated array at the specified index.
@@ -155,7 +155,7 @@ int main() {
     nums[2] = 35;
     nums[3] = 46;
 
-    delete_at((void **) &nums, &len, sizeof(int), 1);
+    array_op_delete_at((void **) &nums, &len, sizeof(int), 1);
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -169,7 +169,7 @@ int main() {
 ### Get
 
 ```c
-void *get(void **arr, size_t len, size_t element_size, size_t at_index);
+void *array_op_get(void **arr, size_t len, size_t element_size, size_t at_index);
 ```
 
 This function retrieves an element from a dynamically allocated array by index.
@@ -203,7 +203,7 @@ int main() {
 
     int index = 2;
 
-    int *result = (int *)get((void **) &nums, len, sizeof(int), index);
+    int *result = (int *)array_op_get((void **) &nums, len, sizeof(int), index);
     if (result) {
         printf("Value at index %d: %d\n", index, *result);
     }
@@ -216,7 +216,7 @@ int main() {
 ### Push Front
 
 ```c
-int push_front(void **arr, size_t *len, void *element, size_t element_size);
+int array_op_push_front(void **arr, size_t *len, void *element, size_t element_size);
 ```
 
 This function inserts an element at the front of a dynamically allocated array.
@@ -248,7 +248,7 @@ int main() {
     nums[2] = 46;
 
     int new_num = 13;
-    push_front((void **)&nums, &len, &new_num, sizeof(int));
+    array_op_push_front((void **)&nums, &len, &new_num, sizeof(int));
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -262,7 +262,7 @@ int main() {
 ### Push Back
 
 ```c
-int push_back(void **arr, size_t *len, void *element, size_t element_size);
+int array_op_push_back(void **arr, size_t *len, void *element, size_t element_size);
 ```
 
 This function appends an element to the end of a dynamically allocated array, identical to [insert](#insert).
@@ -294,7 +294,7 @@ int main() {
     nums[2] = 35;
 
     int new_num = 46;
-    push_back((void **)&nums, &len, &new_num, sizeof(int));
+    array_op_push_back((void **)&nums, &len, &new_num, sizeof(int));
 
     for (size_t i = 0; i < len; i++) {
         printf("%d ", nums[i]);
@@ -308,7 +308,7 @@ int main() {
 ### Pop Front
 
 ```c
-void *pop_front(void **arr, size_t *len, size_t element_size);
+void *array_op_pop_front(void **arr, size_t *len, size_t element_size);
 ```
 
 Removes and returns the first element from a dynamic array, whose memory needs to be freed.
@@ -338,7 +338,7 @@ int main() {
     nums[1] = 24;
     nums[2] = 35;
 
-    int *first_element = pop_front((void **)&nums, &len, sizeof(int));
+    int *first_element = array_op_pop_front((void **)&nums, &len, sizeof(int));
     printf("Popped first element: %d\n", *first_element);
     
     free(first_element);
@@ -351,7 +351,7 @@ int main() {
 ### Pop Back
 
 ```c
-void *pop_back(void **arr, size_t *len, size_t element_size);
+void *array_op_pop_back(void **arr, size_t *len, size_t element_size);
 ```
 
 Removes and returns the last element from a dynamic array, whose memory needs to be freed.
@@ -381,7 +381,7 @@ int main() {
     nums[1] = 24;
     nums[2] = 35;
 
-    int *last_element = pop_back((void **)&nums, &len, sizeof(int));
+    int *last_element = array_op_pop_back((void **)&nums, &len, sizeof(int));
     printf("Popped last element: %d\n", *last_element);
     
     free(last_element);
