@@ -5,12 +5,11 @@
 #include "errno.h"
 #include "stdio.h"
 #include <stdlib.h>
-#include <sys/_types/_size_t.h>
 
 // INTERFACE
 
 int unexpected_error(const char *test_name) {
-  printf("unexpected error in: %s\n", test_name);
+  fprintf(stderr, "unexpected error in: %s\n", test_name);
   return EXIT_FAILURE;
 }
 
@@ -44,7 +43,7 @@ int test_pop_back();
 int test_insert_len() {
   // arrange
   const char *test_name = "test_insert_len";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   int *nums = NULL;
   int n1 = 100;
@@ -60,7 +59,7 @@ int test_insert_len() {
 
   // assert
   if (expect != got) {
-    printf("%s: expect %lu, got %lu\n", test_name, expect, got);
+    fprintf(stderr, "%s: expect %lu, got %lu\n", test_name, expect, got);
     return EXIT_FAILURE;
   }
 
@@ -71,7 +70,7 @@ int test_insert_len() {
 int test_insert_element() {
   // arrange
   const char *test_name = "test_insert_element";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   int *nums = NULL;
   size_t len = 0;
@@ -88,7 +87,7 @@ int test_insert_element() {
   // assert
   int got = nums[0];
   if (expect != got) {
-    printf("%s: expect %d, got %d\n", test_name, expect, got);
+    fprintf(stderr, "%s: expect %d, got %d\n", test_name, expect, got);
     return EXIT_FAILURE;
   }
 
@@ -99,7 +98,7 @@ int test_insert_element() {
 int test_insert_at_len() {
   // arrange
   const char *test_name = "test_insert_at_len";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -122,7 +121,7 @@ int test_insert_at_len() {
 
   // assert
   if (expect != got) {
-    printf("%s: expect %lu, got %lu\n", test_name, expect, got);
+    fprintf(stderr, "%s: expect %lu, got %lu\n", test_name, expect, got);
     return EXIT_FAILURE;
   }
 
@@ -133,7 +132,7 @@ int test_insert_at_len() {
 int test_insert_at_element() {
   // arrange
   const char *test_name = "test_insert_at_element";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -159,7 +158,7 @@ int test_insert_at_element() {
     got = nums[i];
 
     if (expect[i] != got) {
-      printf("%s: expect %d, got %d\n", test_name, expect[i], got);
+      fprintf(stderr, "%s: expect %d, got %d\n", test_name, expect[i], got);
       return EXIT_FAILURE;
     }
   }
@@ -171,7 +170,7 @@ int test_insert_at_element() {
 int test_delete_at_len() {
   // arrange
   const char *test_name = "test_delete_at_len";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
   
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -191,7 +190,7 @@ int test_delete_at_len() {
     }
     // assert
     if (expect[i] != got) {
-      printf("%s: expect %lu, got %lu\n", test_name, expect[i], got);
+      fprintf(stderr, "%s: expect %lu, got %lu\n", test_name, expect[i], got);
       return EXIT_FAILURE;
     }
   }
@@ -203,7 +202,7 @@ int test_delete_at_len() {
 int test_delete_at_element() {
   // arrange
   const char *test_name = "test_delete_at_element";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -226,7 +225,7 @@ int test_delete_at_element() {
     got = nums[i];
 
     if (expect[i] != got) {
-      printf("%s: expect %d, got %d\n", test_name, expect[i], got);
+      fprintf(stderr, "%s: expect %d, got %d\n", test_name, expect[i], got);
       return EXIT_FAILURE;
     }
   }
@@ -238,7 +237,7 @@ int test_delete_at_element() {
 int test_get_element() {
   // arrange
   const char *test_name = "test_get_element";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -259,7 +258,7 @@ int test_get_element() {
 
     // assert
     if (expect[i] != *got) {
-      printf("%s: expect %d, got %d\n", test_name, expect[i], *got);
+      fprintf(stderr, "%s: expect %d, got %d\n", test_name, expect[i], *got);
       return EXIT_FAILURE;
     }
   }
@@ -271,7 +270,7 @@ int test_get_element() {
 int test_push_front() {
   // arrange
   const char *test_name = "test_push_front";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   int *nums = NULL;
   size_t len = 0;
@@ -290,12 +289,12 @@ int test_push_front() {
 
     // assert
     if (expect_len[i] != len) {
-      printf("%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
+      fprintf(stderr, "%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
       return EXIT_FAILURE;
     }
 
     if (expect[i] != got) {
-      printf("%s: element test: expect %d, got %d\n", test_name, expect[i], got);
+      fprintf(stderr, "%s: element test: expect %d, got %d\n", test_name, expect[i], got);
       return EXIT_FAILURE;
     }
   }
@@ -307,7 +306,7 @@ int test_push_front() {
 int test_push_back() {
   // arrange
   const char *test_name = "test_push_back";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   int *nums = NULL;
   size_t len = 0;
@@ -326,12 +325,12 @@ int test_push_back() {
 
     // assert
     if (expect_len[i] != len) {
-      printf("%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
+      fprintf(stderr, "%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
       return EXIT_FAILURE;
     }
 
     if (expect[i] != got) {
-      printf("%s: element test: expect %d, got %d\n", test_name, expect[i], got);
+      fprintf(stderr, "%s: element test: expect %d, got %d\n", test_name, expect[i], got);
       return EXIT_FAILURE;
     }
   }
@@ -343,7 +342,7 @@ int test_push_back() {
 int test_pop_front() {
   // arrange
   const char *test_name = "test_pop_front";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -366,12 +365,12 @@ int test_pop_front() {
 
     // assert
     if (expect_len[i] != len) {
-      printf("%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
+      fprintf(stderr, "%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
       return EXIT_FAILURE;
     }
 
     if (expect[i] != *got) {
-      printf("%s: element test: expect %d, got %d\n", test_name, expect[i], *got);
+      fprintf(stderr, "%s: element test: expect %d, got %d\n", test_name, expect[i], *got);
       return EXIT_FAILURE;
     }
 
@@ -385,7 +384,7 @@ int test_pop_front() {
 int test_pop_back() {
   // arrange
   const char *test_name = "test_pop_back";
-  printf("running %s\n", test_name);
+  fprintf(stderr, "running %s\n", test_name);
 
   size_t len = 4;
   int *nums = (int *)calloc(len, len * sizeof(int));
@@ -408,12 +407,12 @@ int test_pop_back() {
 
     // assert
     if (expect_len[i] != len) {
-      printf("%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
+      fprintf(stderr, "%s: len test: expect %zu, got %zu\n", test_name, expect_len[i], len);
       return EXIT_FAILURE;
     }
 
     if (expect[i] != *got) {
-      printf("%s: element test: expect %d, got %d\n", test_name, expect[i], *got);
+      fprintf(stderr, "%s: element test: expect %d, got %d\n", test_name, expect[i], *got);
       return EXIT_FAILURE;
     }
 
