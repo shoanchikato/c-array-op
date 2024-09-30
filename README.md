@@ -301,6 +301,92 @@ int main() {
 }
 ```
 
+### Pop Front
+
+```c
+void *pop_front(void **arr, size_t *len, size_t element_size);
+```
+
+Removes and returns the first element from a dynamic array, whose memory needs to be freed.
+
+#### Parameters
+
+- `void **arr`: A pointer to the dynamically allocated array.
+- `size_t *len`: A pointer to the length of the array.
+- `size_t element_size`: The size of each element in the array (in bytes).
+
+#### Return Value
+
+- A pointer to the first element that was removed from the array. The caller is responsible for managing the memory of the returned element.
+- Returns `NULL` if the index is out of bounds, or if there is an error.
+
+#### Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "include/array_op.h"
+
+int main() {
+    size_t len = 3;
+    int *nums = (int *)calloc(len, sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+
+    int *first_element = pop_front((void **)&nums, &len, sizeof(int));
+    printf("Popped first element: %d\n", *first_element);
+    
+    free(first_element);
+    free(nums);
+
+    return 0;
+}
+```
+
+### Pop Back
+
+```c
+void *pop_back(void **arr, size_t *len, size_t element_size);
+```
+
+Removes and returns the last element from a dynamic array, whose memory needs to be freed.
+
+#### Parameters
+
+- `void **arr`: A pointer to the dynamically allocated array.
+- `size_t *len`: A pointer to the length of the array.
+- `size_t element_size`: The size of each element in the array (in bytes).
+
+#### Return Value
+
+- A pointer to the last element that was removed from the array. The caller is responsible for managing the memory of the returned element.
+- Returns `NULL` if the index is out of bounds, or if there is an error.
+
+#### Example
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "include/array_op.h"
+
+int main() {
+    size_t len = 3;
+    int *nums = (int *)calloc(len, sizeof(int));
+    nums[0] = 13;
+    nums[1] = 24;
+    nums[2] = 35;
+
+    int *last_element = pop_back((void **)&nums, &len, sizeof(int));
+    printf("Popped last element: %d\n", *last_element);
+    
+    free(last_element);
+    free(nums);
+
+    return 0;
+}
+```
+
 #### Licence
 
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
