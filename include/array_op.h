@@ -41,7 +41,7 @@ int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_si
     return 1;
   }
 
-  void *dst = malloc(element_size * (*len + 1));
+  void *dst = calloc((*len + 1), element_size);
   if (dst == NULL) {
     printf("error allocating memory for dst in array_op_insert_at\n");
     return 1;
@@ -71,7 +71,7 @@ int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_i
     return 1;
   }
 
-  void *dst = malloc(element_size * (*len - 1));
+  void *dst = calloc((*len - 1), element_size);
   if (dst == NULL) {
     printf("error allocating memory for dst in array_op_insert_at\n");
     return 1;
@@ -118,7 +118,7 @@ void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
     return result;
   }
 
-  void *element = malloc(element_size);
+  void *element = calloc(1, element_size);
   if (element == NULL) {
     printf("failed to allocate memory for element\n");
     return NULL;
