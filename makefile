@@ -15,5 +15,3 @@ asm:
 
 debug:
 	gcc -Wall -g -I./include -o ./bin/app main.c && ./bin/app
-
-
