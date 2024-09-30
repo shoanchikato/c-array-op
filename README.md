@@ -8,6 +8,10 @@ This project is a self-contained library implemented in a single header file, of
 - **Insert an element at a specific index in a dynamically allocated array**.
 - **Delete an element from a dynamically allocated array**.
 - **Retrieve an element from a dynamically allocated array by index**.
+- **Insert an element at the front of a dynamically allocated array**.
+- **Insert an element at the back of a dynamically allocated array**.
+- **Remove and return the first element from a dynamically allocated array**.
+- **Remove and return the last element from a dynamically allocated array**.
 
 ## Usage
 
