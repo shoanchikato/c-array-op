@@ -47,14 +47,18 @@ int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_si
     return 1;
   }
 
-  // copy to dst exclusive of index
-  memcpy(dst, *arr, at_index * element_size);
-  // copy new element
-  memcpy((char *)dst + (at_index * element_size), element, element_size);
-  // copy rest of the element inclusive of index
-  memcpy((char *)dst + (at_index + 1) * element_size,
-         (char *)(*arr) + at_index * element_size,
-         (*len - at_index) * element_size);
+  if (*arr == NULL) {
+    memcpy((char *)dst + (at_index * element_size), element, element_size);
+  } else {
+    // copy to dst exclusive of index
+    memcpy(dst, *arr, at_index * element_size);
+    // copy new element
+    memcpy((char *)dst + (at_index * element_size), element, element_size);
+    // copy rest of the element inclusive of index
+    memcpy((char *)dst + (at_index + 1) * element_size,
+          (char *)(*arr) + at_index * element_size,
+          (*len - at_index) * element_size);
+  }
 
   free(*arr);
 
