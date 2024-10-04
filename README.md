@@ -1,6 +1,6 @@
 # Array Op
 
-This project is a self-contained library implemented in a single header file, offering basic functions for manipulating dynamically allocated arrays in C. It includes functions to insert and delete elements at specific indexes, and to retrieve elements from the array.
+This project offers basic functions for manipulating dynamically allocated arrays in C. It includes functions to insert and delete elements at specific indexes, and to retrieve elements from the array.
 
 ## Features
 
@@ -18,11 +18,14 @@ This project is a self-contained library implemented in a single header file, of
 1. **Add the header file**:  
    Place the header file (`array_op.h`) in the `./include` folder or any other directory where your project stores header files.
 
-2. **Compile your program**:  
+2. **Add source file**:  
+   Place the source files (`array_op.c`) in the `./src` folder or any other directory where your project stores source files.
+
+3. **Compile your program**:  
    When compiling, use the `-I` flag to include the directory where the header file is located.  
    Example:
    ```bash
-   gcc -Wall -I./include -o my_program my_program.c
+   gcc -Wall -I./include -o my_program array_op.c my_program.c
    ```
 
 ## Functions

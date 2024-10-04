@@ -1,5 +1,5 @@
 t: # run tests
-	gcc -Wall -I./include -o ./bin/test ./test/test.c && ./bin/test
+	gcc -Wall -I./include -o ./bin/test ./src/*.c ./test/test.c && ./bin/test
 
 run:
 	gcc -Wall -I./include -o ./bin/app main.c && ./bin/app
