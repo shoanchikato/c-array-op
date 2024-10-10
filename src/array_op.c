@@ -1,6 +1,9 @@
+#include "../include/array_op.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+// LOW LEVEL API
 
 int array_op_insert(void **arr, size_t *len, void *element, size_t element_size) {
   size_t arr_size = (*len) * element_size;
@@ -17,8 +20,7 @@ int array_op_insert(void **arr, size_t *len, void *element, size_t element_size)
   return 0;
 }
 
-int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size,
-              size_t at_index) {
+int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size, size_t at_index) {
 
   if (at_index >= *len + 1) {
     printf("error index is out of bounds.\n");
@@ -40,8 +42,8 @@ int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_si
     memcpy((char *)dst + (at_index * element_size), element, element_size);
     // copy rest of the element inclusive of index
     memcpy((char *)dst + (at_index + 1) * element_size,
-          (char *)(*arr) + at_index * element_size,
-          (*len - at_index) * element_size);
+           (char *)(*arr) + at_index * element_size,
+           (*len - at_index) * element_size);
   }
 
   free(*arr);
@@ -89,7 +91,8 @@ void *array_op_get(void **arr, size_t len, size_t element_size, size_t at_index)
   return (char *)*arr + (at_index * element_size);
 }
 
-int array_op_push_front(void **arr, size_t *len, void *element, size_t element_size) {
+int array_op_push_front(void **arr, size_t *len, void *element,
+                        size_t element_size) {
   size_t at_index = 0;
 
   return array_op_insert_at(arr, len, element, element_size, at_index);
@@ -99,8 +102,7 @@ int array_op_push_back(void **arr, size_t *len, void *element, size_t element_si
   return array_op_insert(arr, len, element, element_size);
 }
 
-void *_save_element_before_delete(void **arr, size_t *len, size_t element_size,
-                                  size_t at_index) {
+void *_save_element_before_delete(void **arr, size_t *len, size_t element_size, size_t at_index) {
   void *result = array_op_get(arr, *len, element_size, at_index);
   if (result == NULL) {
     return result;
@@ -133,4 +135,59 @@ void *array_op_pop_back(void **arr, size_t *len, size_t element_size) {
   size_t at_index = *len - 1;
 
   return _save_element_before_delete(arr, len, element_size, at_index);
+}
+
+// 
+
+Arr *array_op_init_s(size_t element_size) {
+  Arr *arr = (Arr *)malloc(sizeof(Arr));
+  if (arr == NULL) {
+    perror("failed to allocated memory for arr\n");
+    exit(1);
+  }
+
+  arr->arr = NULL;
+  arr->element_size = element_size;
+  arr->len = 0;
+
+  return arr;
+}
+
+int array_op_insert_s(Arr *arr, void *element) {
+  return array_op_insert((void **)&arr->arr, &arr->len, element, arr->element_size);
+}
+
+int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
+  return array_op_insert_at((void **)&arr->arr, &arr->len, element,arr->element_size, at_index);
+}
+
+int array_op_delete_at_s(Arr *arr, size_t at_index) {
+  return array_op_delete_at((void **)&arr->arr, &arr->len, arr->element_size, at_index);
+}
+
+void *array_op_get_s(Arr *arr, size_t at_index) {
+  return array_op_get((void **)&arr->arr, arr->len, arr->element_size, at_index);
+}
+
+int array_op_push_front_s(Arr *arr, void *element) {
+  return array_op_push_front((void **)&arr->arr, &arr->len, element,arr->element_size);
+}
+
+int array_op_push_back_s(Arr *arr, void *element) {
+  return array_op_push_back((void **)&arr->arr, &arr->len, element,arr->element_size);
+}
+
+void *array_op_pop_front_s(Arr *arr) {
+  return array_op_pop_front((void **)&arr->arr, &arr->len, arr->element_size);
+}
+
+void *array_op_pop_back_s(Arr *arr) {
+  return array_op_pop_back((void **)&arr->arr, &arr->len, arr->element_size);
+}
+
+void array_op_free_s(Arr *arr) {
+  if (arr == NULL)
+    return;
+
+  free(arr);
 }

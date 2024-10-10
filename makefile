@@ -1,5 +1,7 @@
+ASAN = address,undefined,bounds,alignment,null,shift,signed-integer-overflow,object-size,vla-bound,float-divide-by-zero,return
+
 t: # run tests
-	gcc -Wall -I./include -o ./bin/test ./src/*.c ./test/test.c && ./bin/test
+	gcc -Wall -fsanitize=$(ASAN) -O1 -I./include -I./test -o ./bin/test ./src/*.c ./test/*.c && ./bin/test
 
 run:
 	gcc -Wall -I./include -o ./bin/app main.c && ./bin/app
@@ -15,3 +17,6 @@ asm:
 
 debug:
 	gcc -Wall -g -I./include -o ./bin/app main.c && ./bin/app
+
+clean:
+	rm -rf bin/*
