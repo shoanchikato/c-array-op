@@ -149,6 +149,7 @@ Arr *array_op_init_s(size_t element_size) {
   arr->arr = NULL;
   arr->element_size = element_size;
   arr->len = 0;
+  arr->capacity = 8;
 
   return arr;
 }

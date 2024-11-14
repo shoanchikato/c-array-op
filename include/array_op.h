@@ -1,6 +1,7 @@
 #ifndef ARRAY_OP_H
 #define ARRAY_OP_H
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +22,7 @@ void *array_op_pop_back(void **arr, size_t *len, size_t element_size);
 // HIGH LEVEL API
 
 typedef struct {
+  size_t capacity;
   size_t len;
   size_t element_size;
   void **arr;
