@@ -137,7 +137,7 @@ void *array_op_pop_back(void **arr, size_t *len, size_t element_size) {
   return _save_element_before_delete(arr, len, element_size, at_index);
 }
 
-// 
+// HIGH LEVEL API
 
 Arr *array_op_init_s(size_t element_size) {
   Arr *arr = (Arr *)malloc(sizeof(Arr));
