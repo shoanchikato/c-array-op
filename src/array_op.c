@@ -156,6 +156,19 @@ Arr *array_op_init_s(size_t element_size) {
   return arr;
 }
 
+int reallocate(Arr *arr) {
+  void *content = calloc(arr->element_size, arr->capacity * 2);
+
+  *arr->arr = realloc(*arr->arr, (arr->element_size * arr->capacity * 2));
+  if (*arr->arr == NULL) {
+    printf("error allocating new arr memory\n");
+    return 1;
+  }
+
+  arr->capacity = arr->capacity * 2;
+  return 0;
+}
+
 int array_op_insert_s(Arr *arr, void *element) {
   return array_op_insert((void **)&arr->arr, &arr->len, element, arr->element_size);
 }
