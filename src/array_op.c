@@ -157,7 +157,6 @@ Arr *array_op_init_s(size_t element_size) {
 }
 
 int reallocate(Arr *arr) {
-
   void *content = realloc(*arr->arr, (arr->element_size * arr->capacity * 2));
   if (content == NULL) {
     printf("error allocating new arr memory\n");
@@ -166,12 +165,25 @@ int reallocate(Arr *arr) {
 
   arr->arr = content;
   arr->capacity = arr->capacity * 2;
-  
+
   return 0;
 }
 
 int array_op_insert_s(Arr *arr, void *element) {
-  return array_op_insert((void **)&arr->arr, &arr->len, element, arr->element_size);
+  if(arr->len >= arr->capacity) {
+    if(reallocate(arr) == 0) {
+      memcpy(arr->arr + (arr->len * arr->element_size), element, arr->element_size);
+
+      return 0;
+    }
+
+    return 1;
+  }
+
+  memcpy(arr->arr + (arr->len * arr->element_size), element, arr->element_size);
+  arr->len++;
+  
+  return 0;
 }
 
 int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
