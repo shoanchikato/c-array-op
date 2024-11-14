@@ -146,7 +146,9 @@ Arr *array_op_init_s(size_t element_size) {
     exit(1);
   }
 
-  arr->arr = NULL;
+  void *content = calloc(element_size, 8);
+
+  arr->arr = content;
   arr->element_size = element_size;
   arr->len = 0;
   arr->capacity = 8;
