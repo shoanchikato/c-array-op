@@ -207,7 +207,17 @@ int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
 }
 
 int array_op_delete_at_s(Arr *arr, size_t at_index) {
-  return array_op_delete_at((void **)&arr->arr, &arr->len, arr->element_size, at_index);
+  if (at_index >= arr->len) {
+    printf("error index is out of bounds.\n");
+    return 1;
+  }
+
+  memmove((char *)arr->arr + (at_index * arr->element_size), 
+          (char *)arr->arr + (at_index + 1) * arr->element_size, 
+          (arr->len - 1 - at_index) * arr->element_size);
+  arr->len--;
+
+  return 0;
 }
 
 void *array_op_get_s(Arr *arr, size_t at_index) {
