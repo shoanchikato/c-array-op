@@ -171,23 +171,39 @@ int reallocate(Arr *arr) {
 
 int array_op_insert_s(Arr *arr, void *element) {
   if(arr->len >= arr->capacity) {
-    if(reallocate(arr) == 0) {
-      memcpy(arr->arr + (arr->len * arr->element_size), element, arr->element_size);
-
-      return 0;
+    if(reallocate(arr) != 0) {
+      return 1;
     }
-
-    return 1;
   }
 
   memcpy(arr->arr + (arr->len * arr->element_size), element, arr->element_size);
   arr->len++;
-  
+
   return 0;
 }
 
 int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
-  return array_op_insert_at((void **)&arr->arr, &arr->len, element,arr->element_size, at_index);
+  if (at_index >= arr->len + 1) {
+    printf("error index is out of bounds.\n");
+    return 1;
+  }
+
+  if(arr->len >= arr->capacity) {
+    if(reallocate(arr) != 0) {
+      return 1;
+    }
+  }
+
+  if (at_index < arr->len) {
+    memmove((char *)arr->arr + (at_index + 1) * arr->element_size, 
+            (char *)arr->arr + at_index * arr->element_size, 
+            (arr->len - at_index) * arr->element_size);
+  }
+
+  memcpy((char *)arr->arr + at_index * arr->element_size, element, arr->element_size);
+  arr->len++;
+
+  return 0;
 }
 
 int array_op_delete_at_s(Arr *arr, size_t at_index) {
