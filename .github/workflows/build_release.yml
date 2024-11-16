@@ -22,25 +22,14 @@ jobs:
       - name: Build Static Library
         run: make lib
 
-      # Step 4: Cache the 'release' folder
-      - name: Cache Release Folder
-        id: cache-release
-        uses: actions/cache@v4
-        with:
-          path: release
-          key: release-${{ github.sha }}-${{ github.run_number }}
-          restore-keys: |
-            release-${{ github.sha }}-
-            release-
-
-      # Step 5: Archive Static Library and Headers
+      # Step 4: Archive Static Library and Headers
       - name: Archive Library and Headers
         run: |
           mkdir -p release
           cp ./bin/libarray_op.a release
           cp -r ./include release
 
-      # Step 6: Upload Release Artifacts
+      # Step 5: Upload Release Artifacts
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
