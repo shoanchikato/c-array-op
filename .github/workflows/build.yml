@@ -23,7 +23,3 @@ jobs:
     needs: build_release
     secrets: inherit
 
-  generate_changelog:
-    uses: ./.github/workflows/generate_changelog.yml
-    needs: tag_release
-    secrets: inherit
