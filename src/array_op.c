@@ -230,6 +230,10 @@ int array_op_delete_at_s(Arr *arr, size_t at_index) {
     return 1;
   }
 
+  if(shrink_reallocate(arr) != 0) {
+    return 1;
+  }
+
   memmove((char *)arr->arr + (at_index * arr->element_size), 
           (char *)arr->arr + (at_index + 1) * arr->element_size, 
           (arr->len - 1 - at_index) * arr->element_size);
