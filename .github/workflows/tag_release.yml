@@ -16,10 +16,12 @@ jobs:
 
       # Step 2: Fetch all tags
       - name: Fetch Tags
+        uses: actions/checkout@v4
         run: git fetch --tags
 
       # Step 3: Determine Tag Base
       - name: Calculate Next Tag
+        uses: actions/checkout@v4
         id: calculate_tag
         run: |
           # Fetch all tags
@@ -49,6 +51,8 @@ jobs:
 
       # Step 4: Create and Push the Tag
       - name: Create and Push Tag
+        uses: ncipollo/release-action@v1
+
         run: |
           git config --global user.name "${{ secrets.GIT_USER_NAME }}"
           git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
@@ -62,14 +66,11 @@ jobs:
           name: array_op_lib
           path: release
       
-
       # Step 6: Create GitHub Release
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.NEW_TAG }}
-          release_name: "Release ${{ env.NEW_TAG }}"
-          body: "This release includes the static library and headers."
-          files: release/*
+          artifacts: "release"
+          tag: ${{ env.NEW_TAG }}
+          name: "Release ${{ env.NEW_TAG }}"
+          artifacts: release
