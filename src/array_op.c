@@ -142,7 +142,7 @@ void *array_op_pop_back(void **arr, size_t *len, size_t element_size) {
 Arr *array_op_init_s(size_t element_size) {
   Arr *arr = (Arr *)malloc(sizeof(Arr));
   if (arr == NULL) {
-    perror("failed to allocated memory for arr\n");
+    perror("error failed to allocated memory for arr\n");
     exit(1);
   }
 
@@ -210,7 +210,7 @@ int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
     printf("error null arr or element\n");
     return 1;
   }
-  
+
   if (at_index >= arr->len) {
     printf("error index is out of bounds.\n");
     return 1;
