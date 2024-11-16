@@ -1,0 +1,42 @@
+name: build_release
+permissions:
+  contents: write
+  
+on:
+  workflow_run:
+    workflows: ["build_test"]
+    types:
+      - completed
+
+jobs:
+  build-and-archive:
+    name: Build and Archive Library
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up GCC
+      - name: Install GCC
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+
+      # Step 3: Build Static Library
+      - name: Build Static Library
+        run: make lib
+
+      # Step 4: Archive Static Library and Headers
+      - name: Archive Library and Headers
+        run: |
+          mkdir -p release
+          cp ./bin/libarray_op.a release
+          cp -r ./include release
+
+      # Step 5: Upload Release Artifacts
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: array_op_lib
+          path: release
+          retention-days: 1
