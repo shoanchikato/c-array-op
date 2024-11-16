@@ -29,13 +29,14 @@ jobs:
       # Step 4: Archive Static Library and Headers
       - name: Archive Library and Headers
         run: |
-          mkdir -p ./release
-          cp ./bin/libarray_op.a ./release/
-          cp -r ./include ./release/
+          mkdir -p release
+          cp ./bin/libarray_op.a release
+          cp -r ./include release
 
       # Step 5: Upload Release Artifacts
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
           name: array_op_lib
-          path: ./release
+          path: release
+          retention-days: 1
