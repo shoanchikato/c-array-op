@@ -3,7 +3,6 @@ name: tag_release
 on:
   workflow_call:
     inputs: {}
-    secrets: inherit
 
 jobs:
   tag-and-release:
