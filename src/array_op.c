@@ -314,9 +314,11 @@ void *array_op_pop_back_s(Arr *arr) {
 }
 
 void array_op_free_s(Arr *arr) {
-  if (arr == NULL)
-    return;
+  if (arr == NULL) return;
 
-  free(arr->arr);
+  if(arr->arr != NULL) {
+    free(arr->arr);
+  }
+
   free(arr);
 }
