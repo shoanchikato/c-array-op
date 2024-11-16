@@ -1,5 +1,5 @@
 name: tag_release
-  
+
 on:
   workflow_call:
     inputs: {}
@@ -16,15 +16,12 @@ jobs:
 
       # Step 2: Fetch all tags
       - name: Fetch Tags
-        run: git fetch --tags
+        run: git fetch --tags --force
 
       # Step 3: Determine Tag Base
       - name: Calculate Next Tag
         id: calculate_tag
         run: |
-          # Fetch all tags
-          git fetch --tags --force
-
           # Get the latest tag
           LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
 
@@ -41,7 +38,7 @@ jobs:
           fi
 
           # Construct the new tag
-          NEW_TAG="v${MAJOR}.${MINOR}.${GITHUB_RUN_NUMBER}"
+          NEW_TAG="v${MAJOR}.${MINOR}.${{ github.run_number }}"
 
           # Output the new tag
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
@@ -61,15 +58,11 @@ jobs:
         with:
           name: array_op_lib
           path: release
-      
 
       # Step 6: Create GitHub Release
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.NEW_TAG }}
-          release_name: "Release ${{ env.NEW_TAG }}"
-          body: "This release includes the static library and headers."
-          files: release/*
+          tag: ${{ env.NEW_TAG }}
+          name: "Release ${{ env.NEW_TAG }}"
+          artifacts: "release"
