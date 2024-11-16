@@ -261,7 +261,7 @@ int array_op_push_front_s(Arr *arr, void *element) {
 }
 
 int array_op_push_back_s(Arr *arr, void *element) {
-  return array_op_push_back((void **)&arr->arr, &arr->len, element,arr->element_size);
+  return array_op_insert_at_s(arr, element, arr->len);
 }
 
 void *array_op_pop_front_s(Arr *arr) {
