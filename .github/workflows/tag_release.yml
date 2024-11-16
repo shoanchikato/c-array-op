@@ -49,11 +49,14 @@ jobs:
           git push origin ${{ env.NEW_TAG }}
 
       # Step 5: Download Release Artifacts
+      - name: Display structure of downloaded files
+        run: ls -R ~/release
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: array_op_lib
-          path: ./release
+          path: ~/release
+      
 
       # Step 6: Create GitHub Release
       - name: Create Release
@@ -64,4 +67,4 @@ jobs:
           tag_name: ${{ env.NEW_TAG }}
           release_name: "Release ${{ env.NEW_TAG }}"
           body: "This release includes the static library and headers."
-          files: ./release/*
+          files: ~/release/*
