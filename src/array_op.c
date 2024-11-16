@@ -303,5 +303,6 @@ void array_op_free_s(Arr *arr) {
   if (arr == NULL)
     return;
 
+  free(arr->arr);
   free(arr);
 }
