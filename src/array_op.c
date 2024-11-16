@@ -159,7 +159,7 @@ Arr *array_op_init_s(size_t element_size) {
 int reallocate(Arr *arr) {
   void *content = realloc(arr->arr, (arr->element_size * arr->capacity * 2));
   if (content == NULL) {
-    printf("error allocating new arr memory\n");
+    printf("error allocating more arrary memory\n");
     return 1;
   }
 
@@ -176,7 +176,7 @@ int shrink_reallocate(Arr *arr) {
         void *new_arr = realloc(arr->arr, new_capacity * arr->element_size);
 
         if (new_arr == NULL) {
-            printf("error reallocating to smaller size.\n");
+            printf("error reallocating to less array memory\n");
             return 1;
         }
 
@@ -207,12 +207,12 @@ int array_op_insert_s(Arr *arr, void *element) {
 
 int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
   if(!arr || !element) {
-    printf("error null arr or element\n");
+    printf("error null arr or element, index: %zu, len: %zu\n", at_index, arr->len);
     return 1;
   }
 
-  if (at_index >= arr->len) {
-    printf("error index is out of bounds.\n");
+  if (at_index > arr->len) {
+    printf("error index is out of bounds, index: %zu, len: %zu\n", at_index, arr->len);
     return 1;
   }
 
@@ -236,7 +236,7 @@ int array_op_insert_at_s(Arr *arr, void *element, size_t at_index) {
 
 int array_op_delete_at_s(Arr *arr, size_t at_index) {
   if (at_index >= arr->len) {
-    printf("error index is out of bounds.\n");
+    printf("error index is out of bounds, index: %zu, len: %zu\n", at_index, arr->len);
     return 1;
   }
 
@@ -257,7 +257,7 @@ void *array_op_get_s(Arr *arr, size_t at_index) {
 }
 
 int array_op_push_front_s(Arr *arr, void *element) {
-  return array_op_push_front((void **)&arr->arr, &arr->len, element,arr->element_size);
+  return array_op_insert_at_s(arr, element, 0);
 }
 
 int array_op_push_back_s(Arr *arr, void *element) {
