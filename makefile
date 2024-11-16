@@ -1,22 +1,19 @@
 ASAN = address,undefined,bounds,alignment,null,shift,signed-integer-overflow,object-size,vla-bound,float-divide-by-zero,return
 
-t: # run tests
-	gcc -Wall -fsanitize=$(ASAN) -O1 -I./include -I./test -o ./bin/test ./src/*.c ./test/*.c && ./bin/test
+SRC = ./src/*.c
+OBJ = ./bin/libarray_op.o
+LIB = ./bin/libarray_op.a
 
-run:
-	gcc -Wall -I./include -o ./bin/app main.c && ./bin/app
+.PHONY: test
+test: # run tests
+	mkdir -p bin
+	gcc -Wall -fsanitize=$(ASAN) -O1 -I./include -I./test -o ./bin/test ./test/*.c $(SRC) && ./bin/test
 
-build:
-	gcc -Wall -I./include -o ./bin/app main.c
-
+.PHONY: lib
 lib:
-	gcc -Wall -I./include -o ./bin/array_op.o -c ./include/array_op.h
+	mkdir -p bin
+	gcc -Wall -I./include -c -o $(OBJ) $(SRC) && ar rcs $(LIB) $(OBJ)
 
-asm:
-	gcc -Wall -S -I./include -o ./bin/array_op.s main.c
-
-debug:
-	gcc -Wall -g -I./include -o ./bin/app main.c && ./bin/app
-
+.PHONY: clean
 clean:
-	rm -rf bin/*
+	rm -rf bin
