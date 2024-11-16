@@ -169,6 +169,24 @@ int reallocate(Arr *arr) {
   return 0;
 }
 
+int shrink_reallocate(Arr *arr) {
+    // Only shrink if capacity is more than 2 and usage is less than or equal to half
+    if (arr->capacity > 2 && arr->len <= arr->capacity / 2) {
+        size_t new_capacity = arr->capacity / 2;
+        void *new_arr = realloc(arr->arr, new_capacity * arr->element_size);
+
+        if (new_arr == NULL) {
+            printf("error reallocating to smaller size.\n");
+            return 1;
+        }
+
+        arr->arr = new_arr;
+        arr->capacity = new_capacity;
+    }
+
+    return 0;
+}
+
 int array_op_insert_s(Arr *arr, void *element) {
   if(arr->len >= arr->capacity) {
     if(reallocate(arr) != 0) {
