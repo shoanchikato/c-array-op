@@ -26,6 +26,10 @@ int array_op_insert(void **arr, size_t *len, void *element, size_t element_size)
 }
 
 int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_size, size_t at_index) {
+  if(!arr || !element) {
+    printf("error null arr or element, index: %zu, len: %zu\n", at_index, *len);
+    return 1;
+  }
 
   if (at_index >= *len + 1) {
     printf("error index is out of bounds.\n");
