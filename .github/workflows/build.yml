@@ -8,17 +8,17 @@ on:
 
 jobs:
   # Import Build and Test job
-  build-and-test:
+  build_test:
     uses: ./.github/workflows/build_test.yml
 
-  build-and-release:
+  build_release:
     uses: ./.github/workflows/build_release.yml
     needs: build_test
 
-  tag-and-release:
+  tag_release:
     uses: ./.github/workflows/tag_release.yml
     needs: build_release
 
-  generate-changelog:
+  generate_changelog:
     uses: ./.github/workflows/generate_changelog.yml
     needs: tag_release
