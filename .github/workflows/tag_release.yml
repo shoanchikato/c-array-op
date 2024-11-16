@@ -65,4 +65,4 @@ jobs:
         with:
           tag: ${{ env.NEW_TAG }}
           name: "Release ${{ env.NEW_TAG }}"
-          artifacts: "release"
+          files: './release/*'
