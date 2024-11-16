@@ -1,0 +1,58 @@
+name: tag_release
+runs-on: ubuntu-latest
+
+steps:
+  # Step 1: Checkout the repository
+  - name: Checkout Code
+    uses: actions/checkout@v4
+
+  # Step 2: Fetch all tags
+  - name: Fetch Tags
+    run: git fetch --tags
+
+  # Step 3: Determine Tag Base
+  - name: Calculate Next Tag
+    id: calculate_tag
+    run: |
+      LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+      MAJOR=$(echo "$LAST_TAG" | cut -d '.' -f 1 | tr -d 'v')
+      MINOR=$(echo "$LAST_TAG" | cut -d '.' -f 2)
+
+      if [[ "$LAST_TAG" == "v0.0.0" ]]; then
+        MINOR=1
+      else
+        MINOR=$((MINOR + 1))
+      fi
+
+      NEW_TAG="v${MAJOR}.${MINOR}.${{ github.run_number }}"
+      echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+      echo "New tag: $NEW_TAG"
+
+  # Step 4: Create and Push the Tag
+  - name: Create and Push Tag
+    run: |
+      git config --global user.name "${{ secrets.GIT_USER_NAME }}"
+      git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
+      git tag ${{ env.NEW_TAG }}
+      git push origin ${{ env.NEW_TAG }}
+
+  # Step 5: Download Release Artifacts
+  - name: Display structure of downloaded files
+    run: ls -R release
+  - name: Download Artifacts
+    uses: actions/download-artifact@v4
+    with:
+      name: array_op_lib
+      path: release
+  
+
+  # Step 6: Create GitHub Release
+  - name: Create Release
+    uses: actions/create-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag_name: ${{ env.NEW_TAG }}
+      release_name: "Release ${{ env.NEW_TAG }}"
+      body: "This release includes the static library and headers."
+      files: release/*
