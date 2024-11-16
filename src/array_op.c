@@ -6,6 +6,11 @@
 // LOW LEVEL API
 
 int array_op_insert(void **arr, size_t *len, void *element, size_t element_size) {
+  if(!element) {
+    printf("error null element provided\n");
+    return 1;
+  }
+
   size_t arr_size = (*len) * element_size;
 
   *arr = realloc(*arr, arr_size + element_size);
