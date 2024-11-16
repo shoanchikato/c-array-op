@@ -152,6 +152,7 @@ Arr *array_op_init_s(size_t element_size) {
   Arr *arr = (Arr *)malloc(sizeof(Arr));
   if (arr == NULL) {
     perror("error failed to allocated memory for arr\n");
+    array_op_free_s(arr);
     exit(1);
   }
 
