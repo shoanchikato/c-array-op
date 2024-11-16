@@ -36,3 +36,9 @@ jobs:
           name: array_op_lib
           path: release
           retention-days: 1
+
+      # Step 6: Upload Release Assets
+      - name: Upload Assets to Release
+        uses: ncipollo/release-action@v1
+        with:
+          files: './release/*'
