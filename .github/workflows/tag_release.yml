@@ -50,9 +50,9 @@ jobs:
 
       # Step 5: Download Release Artifacts
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: static-library
+          name: array_op_lib
           path: ./release
 
       # Step 6: Create GitHub Release
