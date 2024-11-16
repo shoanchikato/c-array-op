@@ -264,6 +264,29 @@ int array_op_push_back_s(Arr *arr, void *element) {
   return array_op_insert_at_s(arr, element, arr->len);
 }
 
+void *_save_element_before_delete_s(Arr *arr, size_t at_index) {
+  void *result = array_op_get_s(arr, at_index);
+  if (result == NULL) {
+    return result;
+  }
+
+  void *element = calloc(1, arr->element_size);
+  if (element == NULL) {
+    printf("failed to allocate memory for element\n");
+    return NULL;
+  }
+
+  if (result != NULL) {
+
+    memcpy(element, result, arr->element_size);
+    array_op_delete_at_s(arr, at_index);
+
+    return element;
+  }
+
+  return NULL;
+}
+
 void *array_op_pop_front_s(Arr *arr) {
   return array_op_pop_front((void **)&arr->arr, &arr->len, arr->element_size);
 }
