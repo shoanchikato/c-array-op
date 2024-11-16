@@ -72,8 +72,10 @@ int test_insert_at_len_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
   nums->len = len;
+  nums->capacity = len;
 
   int n1 = 100;
   size_t at_index = 2;
@@ -110,8 +112,10 @@ int test_insert_at_element_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
   nums->len = len;
+  nums->capacity = len;
 
   int n1 = 100;
 
@@ -152,8 +156,10 @@ int test_delete_at_len_s() {
   arr[3] = 4;
 
   Arr *nums = array_op_init_s(sizeof(int));
-  nums->len = len;
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
+  nums->len = len;
+  nums->capacity = len;
 
   size_t expect[4] = {3, 2, 1, 0};
   size_t at_index = 0;
@@ -189,8 +195,10 @@ int test_delete_at_element_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
-  nums->len = len;
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
+  nums->len = len;
+  nums->capacity = len;
 
   int expect[3] = {24, 35, 46};
   int got = 0;
@@ -230,8 +238,10 @@ int test_get_element_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
-  nums->len = len;
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
+  nums->len = len;
+  nums->capacity = len;
 
   int expect[4] = {13, 24, 35, 46};
   int *got = NULL;
@@ -337,8 +347,10 @@ int test_array_op_pop_front_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
   nums->len = len;
+  nums->capacity = len;
 
   int expect[] = {13, 24, 35, 46};
   size_t expect_len[] = {3, 2, 1, 0}; 
@@ -383,8 +395,10 @@ int test_array_op_pop_back_s() {
   arr[3] = 46;
 
   Arr *nums = array_op_init_s(sizeof(int));
+  free(nums->arr); // when mutually assigning
   nums->arr = (void **)arr;
   nums->len = len;
+  nums->capacity = len;
 
   int expect [] = {46, 35, 24, 13};
   size_t expect_len[] = {3, 2, 1, 0}; 
