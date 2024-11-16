@@ -9,16 +9,16 @@ on:
 jobs:
   # Import Build and Test job
   build_test:
-    uses: ./.github/workflows/build_test.yml
+    uses: ./.github/workflows/build_test.yml@main
 
   build_release:
-    uses: ./.github/workflows/build_release.yml
+    uses: ./.github/workflows/build_release.yml@main
     needs: build_test
 
   tag_release:
-    uses: ./.github/workflows/tag_release.yml
+    uses: ./.github/workflows/tag_release.yml@main
     needs: build_release
 
   generate_changelog:
-    uses: ./.github/workflows/generate_changelog.yml
+    uses: ./.github/workflows/generate_changelog.yml@main
     needs: tag_release
