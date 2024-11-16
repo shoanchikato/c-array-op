@@ -1,5 +1,7 @@
 name: tag_release
-
+permissions:
+  contents: write
+  
 on:
   workflow_run:
     workflows: ["build_release"]

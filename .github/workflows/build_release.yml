@@ -1,5 +1,7 @@
 name: build_release
-
+permissions:
+  contents: write
+  
 on:
   workflow_run:
     workflows: ["build_test"]
