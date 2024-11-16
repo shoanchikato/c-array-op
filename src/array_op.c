@@ -270,7 +270,7 @@ int array_op_push_front_s(Arr *arr, void *element) {
 }
 
 int array_op_push_back_s(Arr *arr, void *element) {
-  return array_op_insert_at_s(arr, element, arr->len);
+  return array_op_insert_s(arr, element);
 }
 
 void *_save_element_before_delete_s(Arr *arr, size_t at_index) {
