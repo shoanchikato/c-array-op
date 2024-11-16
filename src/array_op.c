@@ -188,13 +188,18 @@ int shrink_reallocate(Arr *arr) {
 }
 
 int array_op_insert_s(Arr *arr, void *element) {
+  if(!arr || !element) {
+    printf("error null arr or element\n");
+    return 1;
+  }
+
   if(arr->len >= arr->capacity) {
     if(reallocate(arr) != 0) {
       return 1;
     }
   }
 
-  memcpy(arr->arr + (arr->len * arr->element_size), element, arr->element_size);
+  memcpy((char *)arr->arr + (arr->len * arr->element_size), element, arr->element_size);
   arr->len++;
 
   return 0;
