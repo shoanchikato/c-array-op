@@ -56,8 +56,6 @@ jobs:
           git push origin ${{ env.NEW_TAG }}
 
       # Step 5: Download Release Artifacts
-      - name: Display structure of downloaded files
-        run: ls -R release
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
