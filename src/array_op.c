@@ -288,7 +288,9 @@ void *_save_element_before_delete_s(Arr *arr, size_t at_index) {
 }
 
 void *array_op_pop_front_s(Arr *arr) {
-  return array_op_pop_front((void **)&arr->arr, &arr->len, arr->element_size);
+  size_t at_index = 0;
+  
+  return _save_element_before_delete_s(arr, at_index);
 }
 
 void *array_op_pop_back_s(Arr *arr) {
