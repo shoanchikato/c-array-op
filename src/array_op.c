@@ -32,7 +32,7 @@ int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_si
   }
 
   if (at_index >= *len + 1) {
-    printf("error index is out of bounds.\n");
+    printf("error index is out of bounds, index: %zu, len: %zu\n", at_index, *len);
     return 1;
   }
 
@@ -66,7 +66,7 @@ int array_op_insert_at(void **arr, size_t *len, void *element, size_t element_si
 int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_index) {
 
   if (at_index >= *len) {
-    printf("error index is out of bounds.\n");
+    printf("error index is out of bounds, index: %zu, len: %zu\n", at_index, *len);
     return 1;
   }
 
@@ -93,7 +93,7 @@ int array_op_delete_at(void **arr, size_t *len, size_t element_size, size_t at_i
 
 void *array_op_get(void **arr, size_t len, size_t element_size, size_t at_index) {
   if (at_index >= len) {
-    printf("error index is out of bounds.\n");
+    printf("error index is out of bounds, index: %zu, len: %zu\n", at_index, len);
     return NULL;
   }
 
