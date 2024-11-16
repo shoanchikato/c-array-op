@@ -158,7 +158,7 @@ Arr *array_op_init_s(size_t element_size) {
   void *content = calloc(element_size, 4);
   if (content == NULL) {
     perror("error failed to allocate memory for array elements");
-    array_op_free_s(arr);
+    free(arr);
     exit(1);
   }
 
