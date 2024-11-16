@@ -22,17 +22,28 @@ jobs:
       - name: Calculate Next Tag
         id: calculate_tag
         run: |
+          # Fetch all tags
+          git fetch --tags --force
+
+          # Get the latest tag
           LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+
+          # Extract major, minor, and patch parts
           MAJOR=$(echo "$LAST_TAG" | cut -d '.' -f 1 | tr -d 'v')
           MINOR=$(echo "$LAST_TAG" | cut -d '.' -f 2)
+          PATCH=$(echo "$LAST_TAG" | cut -d '.' -f 3)
 
+          # Increment the minor part
           if [[ "$LAST_TAG" == "v0.0.0" ]]; then
             MINOR=1
           else
             MINOR=$((MINOR + 1))
           fi
 
-          NEW_TAG="v${MAJOR}.${MINOR}.${{ github.run_number }}"
+          # Construct the new tag
+          NEW_TAG="v${MAJOR}.${MINOR}.${GITHUB_RUN_NUMBER}"
+
+          # Output the new tag
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
           echo "New tag: $NEW_TAG"
 
