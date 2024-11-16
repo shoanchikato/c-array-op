@@ -1,6 +1,4 @@
 name: build_release
-permissions:
-  contents: write
   
 on:
   workflow_call:

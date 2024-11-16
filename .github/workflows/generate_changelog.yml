@@ -1,6 +1,4 @@
 name: generate_changelog
-permissions:
-  contents: write
   
 on:
   workflow_call:
