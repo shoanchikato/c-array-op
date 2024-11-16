@@ -1,5 +1,9 @@
 name: Build and Release Workflow
 
+permissions:
+  contents: write
+  actions: read
+
 on:
   push:
     branches:
@@ -18,7 +22,9 @@ jobs:
   tag_release:
     uses: ./.github/workflows/tag_release.yml
     needs: build_release
+    secrets: inherit
 
   generate_changelog:
     uses: ./.github/workflows/generate_changelog.yml
     needs: tag_release
+    secrets: inherit

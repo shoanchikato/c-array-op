@@ -1,10 +1,9 @@
 name: tag_release
-permissions:
-  contents: write
   
 on:
   workflow_call:
     inputs: {}
+    secrets: inherit
 
 jobs:
   tag-and-release:
