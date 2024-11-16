@@ -3,10 +3,8 @@ permissions:
   contents: write
   
 on:
-  workflow_run:
-    workflows: ["build_release"]
-    types:
-      - completed
+  workflow_call:
+    inputs: {}
 
 jobs:
   tag-and-release:

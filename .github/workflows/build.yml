@@ -1,0 +1,24 @@
+name: Build and Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # Import Build and Test job
+  build-and-test:
+    uses: ./.github/workflows/build_test.yml
+
+  build-and-release:
+    uses: ./.github/workflows/build_release.yml
+    needs: build_test
+
+  tag-and-release:
+    uses: ./.github/workflows/tag_release.yml
+    needs: build_release
+
+  generate-changelog:
+    uses: ./.github/workflows/generate_changelog.yml
+    needs: tag_release
