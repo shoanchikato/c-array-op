@@ -40,7 +40,6 @@ int array_op_push_back_s(Arr *arr, void *element);
 void *array_op_pop_front_s(Arr *arr);
 void *array_op_pop_back_s(Arr *arr);
 
-int reallocate(Arr *arr);
 void array_op_free_s(Arr *arr);
 
 #endif // ARRAY_OP_H
