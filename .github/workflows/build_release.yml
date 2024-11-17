@@ -15,21 +15,25 @@ jobs:
             os: ubuntu-latest
             compiler: gcc
             archive_ext: tar.gz
+            asset_name: linux_gcc
 
           - name: Linux Clang
             os: ubuntu-latest
             compiler: clang
             archive_ext: tar.gz
+            asset_name: linux_clang
 
           - name: MacOS Clang
             os: macos-latest
             compiler: clang
             archive_ext: tar.gz
+            asset_name: macos
 
           - name: Windows MSVC
             os: windows-latest
             compiler: cl
             archive_ext: zip
+            asset_name: win
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,27 +49,39 @@ jobs:
       - name: "Build Static Library"
         run: |
           mkdir -p bin
-          if [ "clang" == "cl" ]; then
-            cl /Iinclude /c src/*.c /Fo:bin/ && lib /OUT:bin/libarray_op.lib bin/*.obj
+          if [ "${{ matrix.compiler }}" == "cl" ]; then
+            cl /I./include /c src/*.c /Fo:bin/ && lib /OUT:bin/libarray_op.lib bin/*.obj
           else
-            clang -Wall -Iinclude -c src/*.c -o bin/libarray_op.o
+            ${{ matrix.compiler }} -Wall -I./include -c src/*.c -o bin/libarray_op.o
             ar rcs bin/libarray_op.a bin/libarray_op.o
           fi
+        shell: bash
+
+      - name: "Prepare Release Folder"
+        run: |
+          mkdir -p release/include
+          cp -r include/* release/include/
+          if [ "${{ matrix.compiler }}" == "cl" ]; then
+            cp bin/libarray_op.lib release/
+          else
+            cp bin/libarray_op.a release/
+          fi
+        shell: bash
 
       - name: "Package Release Asset"
         run: |
           mkdir -p release
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            powershell Compress-Archive -Path bin\\* -DestinationPath release\\libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
+            powershell Compress-Archive -Path release\\* -DestinationPath release\\libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
           else
-            tar -czvf release/libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }} -C bin .
+            tar -czvf release/libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }} -C release include libarray_op.a
           fi
+        shell: bash
 
       - name: "Upload Release Asset"
         uses: shogo82148/actions-upload-release-asset@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: release/libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
-          asset_name: libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
+          asset_name: libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
           overwrite: true
-
