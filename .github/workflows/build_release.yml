@@ -1,38 +1,71 @@
 name: build_release
-  
+
 on:
   workflow_call:
     inputs: {}
 
 jobs:
-  build-and-archive:
-    name: Build and Archive Library
-    runs-on: ubuntu-latest
+  compile_build:
+    name: "Build Static Library"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux GCC
+            os: ubuntu-latest
+            compiler: gcc
+            archive_ext: tar.gz
 
+          - name: Linux Clang
+            os: ubuntu-latest
+            compiler: clang
+            archive_ext: tar.gz
+
+          - name: MacOS Clang
+            os: macos-latest
+            compiler: clang
+            archive_ext: tar.gz
+
+          - name: Windows MSVC
+            os: windows-latest
+            compiler: cl
+            archive_ext: zip
+
+    runs-on: ${{ matrix.os }}
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Code
+      - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      # Step 2: Set up GCC
-      - name: Install GCC
-        run: sudo apt-get update && sudo apt-get install -y build-essential
+      - name: "Enable MSVC command prompt"
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+        with: 
+          arch: x86_64
 
-      # Step 3: Build Static Library
-      - name: Build Static Library
-        run: make lib
+      - name: "Build Static Library"
+        run: |
+          mkdir -p bin
+          if [ "clang" == "cl" ]; then
+            cl /Iinclude /c src/*.c /Fo:bin/ && lib /OUT:bin/libarray_op.lib bin/*.obj
+          else
+            clang -Wall -Iinclude -c src/*.c -o bin/libarray_op.o
+            ar rcs bin/libarray_op.a bin/libarray_op.o
+          fi
 
-      # Step 4: Archive Static Library and Headers
-      - name: Archive Library and Headers
+      - name: "Package Release Asset"
         run: |
           mkdir -p release
-          cp ./bin/libarray_op.a release
-          cp -r ./include release
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            powershell Compress-Archive -Path bin\\* -DestinationPath release\\libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
+          else
+            tar -czvf release/libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }} -C bin .
+          fi
 
-      # Step 5: Upload Release Artifacts
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4
+      - name: "Upload Release Asset"
+        uses: shogo82148/actions-upload-release-asset@v1
         with:
-          name: array_op_lib
-          path: release
-          retention-days: 1
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: release/libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
+          asset_name: libarray_op_${{ matrix.name }}.${{ matrix.archive_ext }}
+          overwrite: true
+
