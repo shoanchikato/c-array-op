@@ -16,13 +16,15 @@ jobs:
             os: ubuntu-latest
             compiler: gcc
             archive_ext: tar.gz
-            asset_name: linux_gcc
+            arch: x86_64
+            asset_name: linux_x86_64_gcc
 
           - name: Linux Clang
             os: ubuntu-latest
             compiler: clang
             archive_ext: tar.gz
-            asset_name: linux_clang
+            arch: x86_64
+            asset_name: linux_x86_64_clang
 
           - name: MacOS Clang
             os: macos-latest
@@ -71,17 +73,27 @@ jobs:
 
       - name: "Build Static Library"
         run: |
+          echo running on ${{ matrix.os }} ${{ matrix.arch}}
           mkdir -p bin
           if [ "${{ matrix.compiler }}" == "cl" ]; then
             cl /I"include" /c src/*.c /Fo"bin\\" 
             lib /OUT:"bin\\libarray_op.lib" "bin\\*.obj"
+          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            # Linux GCC/Clang (Ubuntu)
+            if [ "${{ matrix.arch }}" == "x86_64" ]; then
+              # For x86_64 architecture
+              ${{ matrix.compiler }} -Wall -Iinclude -c src/*.c -o bin/libarray_op.o -m64
+              ar rcs bin/libarray_op.a bin/libarray_op.o
+            elif [ "${{ matrix.arch }}" == "arm64" ]; then
+              # For arm64 architecture
+              ${{ matrix.compiler }} -Wall -Iinclude -c src/*.c -o bin/libarray_op.o -m32
+              ar rcs bin/libarray_op.a bin/libarray_op.o
+            fi
           else
-            ${{ matrix.compiler }} -Wall -Iinclude -c src/*.c -o bin/libarray_op.o
+            ${{ matrix.compiler }} -Wall -Iinclude -c src/*.c -o bin/libarray_op.o -arch ${{ matrix.arch }}
             ar rcs bin/libarray_op.a bin/libarray_op.o
           fi
         shell: bash
-        with:
-          arch: ${{ matrix.arch }}
 
       - name: "Prepare Release Folder"
         run: |
