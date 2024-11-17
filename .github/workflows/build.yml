@@ -16,10 +16,10 @@ jobs:
 
   build_release:
     uses: ./.github/workflows/build_release.yml
-    needs: build_test
+    needs: tag_release
 
   tag_release:
     uses: ./.github/workflows/tag_release.yml
-    needs: build_release
+    needs: build_test
     secrets: inherit
 

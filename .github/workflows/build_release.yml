@@ -82,7 +82,6 @@ jobs:
       - name: "Create Release"
         id: create_release
         uses: actions/create-release@v1
-        needs: tag_release
         with:
           tag_name: ${{ steps.calculate_tag.outputs.new_tag }}
           release_name: "Release ${{ steps.calculate_tag.outputs.new_tag }}"
@@ -92,7 +91,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Upload Release Asset"
-        needs: tag_release
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
