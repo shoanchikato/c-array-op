@@ -1,38 +1,68 @@
 name: build_release
-  
+
 on:
   workflow_call:
     inputs: {}
 
 jobs:
-  build-and-archive:
-    name: Build and Archive Library
-    runs-on: ubuntu-latest
+  compile-library:
+    name: build_release
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            extension: .a
+            compiler: gcc
+          - os: windows-latest
+            extension: .lib
+            compiler: cl
+          - os: macos-latest
+            extension: .a
+            compiler: gcc
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Set up GCC
-      - name: Install GCC
-        run: sudo apt-get update && sudo apt-get install -y build-essential
+      # Step 2: Set up the build environment
+      - name: Install Build Tools (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential
+          # macOS already includes GCC
 
-      # Step 3: Build Static Library
-      - name: Build Static Library
-        run: make lib
+      - name: Set up MSVC (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install visualstudio2019buildtools --package-parameters '--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart'
 
-      # Step 4: Archive Static Library and Headers
-      - name: Archive Library and Headers
+      # Step 3: Compile the static library
+      - name: Compile Library
+        run: |
+          mkdir -p bin
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            cl /c /I include /Fo:bin\ *.c
+            lib /out:bin\libarray_op${{ matrix.extension }} bin\*.obj
+          else
+            gcc -Wall -I./include -c -o bin/libarray_op.o ./src/*.c
+            ar rcs bin/libarray_op${{ matrix.extension }} bin/libarray_op.o
+          fi
+
+      # Step 4: Archive the library and headers
+      - name: Archive Library
         run: |
           mkdir -p release
-          cp ./bin/libarray_op.a release
-          cp -r ./include release
+          cp bin/libarray_op${{ matrix.extension }} release/
+          cp -r include release/
 
-      # Step 5: Upload Release Artifacts
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4
+      # Step 5: Upload the library artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: array_op_lib
+          name: libarray_op-${{ matrix.os }}
           path: release
-          retention-days: 1
