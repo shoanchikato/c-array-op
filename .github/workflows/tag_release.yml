@@ -20,7 +20,6 @@ jobs:
 
       # Step 3: Determine Tag Base
       - name: Calculate Next Tag
-        id: calculate_tag
         run: |
           # Get the latest tag
           LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
@@ -42,7 +41,6 @@ jobs:
 
           # Output the new tag
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-          echo "::set-output name=new_tag::$NEW_TAG"
           echo "New tag: $NEW_TAG"
 
       # Step 4: Create and Push the Tag
@@ -52,18 +50,3 @@ jobs:
           git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
           git tag ${{ env.NEW_TAG }}
           git push origin ${{ env.NEW_TAG }}
-
-      # Step 5: Download Release Artifacts
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: array_op_lib
-          path: release
-
-      # Step 6: Create GitHub Release
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.NEW_TAG }}
-          name: "Release ${{ env.NEW_TAG }}"
-          files: './release/*'
