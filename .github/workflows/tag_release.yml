@@ -5,7 +5,7 @@ on:
     inputs: {}
 
 jobs:
-  tag-and-release:
+  tag_release:
     name: tag_release
     runs-on: ubuntu-latest
 
@@ -42,6 +42,7 @@ jobs:
 
           # Output the new tag
           echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo "::set-output name=new_tag::$NEW_TAG"
           echo "New tag: $NEW_TAG"
 
       # Step 4: Create and Push the Tag
