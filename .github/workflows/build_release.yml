@@ -5,6 +5,7 @@ on:
     inputs: {}
 
 jobs:
+  # Matrix build job
   compile_build:
     name: "Build Static Library"
     strategy:
@@ -25,15 +26,37 @@ jobs:
 
           - name: MacOS Clang
             os: macos-latest
+            compiler: gcc
+            archive_ext: tar.gz
+            arch: x86_64
+            asset_name: macos_x86_64_gcc
+
+          - name: MacOS Clang
+            os: macos-latest
             compiler: clang
             archive_ext: tar.gz
-            asset_name: macos
+            arch: x86_64
+            asset_name: macos_x86_64_clang
 
-          - name: Windows MSVC
-            os: windows-latest
-            compiler: cl
-            archive_ext: zip
-            asset_name: win
+          - name: MacOS Clang (M1/arm64)
+            os: macos-latest
+            compiler: clang
+            archive_ext: tar.gz
+            arch: arm64
+            asset_name: macos_arm_clang
+          
+          - name: MacOS Clang (M1/arm64)
+            os: macos-latest
+            compiler: gcc
+            archive_ext: tar.gz
+            arch: arm64
+            asset_name: macos_arm_gcc
+
+          # - name: Windows MSVC
+          #   os: windows-latest
+          #   compiler: cl
+          #   archive_ext: zip
+          #   asset_name: win
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -50,13 +73,15 @@ jobs:
         run: |
           mkdir -p bin
           if [ "${{ matrix.compiler }}" == "cl" ]; then
-            cl /I"include" /c src/*.c /Fo:bin\\
-            lib /OUT:bin\\libarray_op.lib bin\\*.obj
+            cl /I"include" /c src/*.c /Fo"bin\\" 
+            lib /OUT:"bin\\libarray_op.lib" "bin\\*.obj"
           else
             ${{ matrix.compiler }} -Wall -Iinclude -c src/*.c -o bin/libarray_op.o
             ar rcs bin/libarray_op.a bin/libarray_op.o
           fi
         shell: bash
+        with:
+          arch: ${{ matrix.arch }}
 
       - name: "Prepare Release Folder"
         run: |
@@ -73,27 +98,70 @@ jobs:
         run: |
           mkdir -p release
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            powershell Compress-Archive -Path release\\* -DestinationPath release\\libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
+            powershell Compress-Archive -Path release\\* -DestinationPath release\\${{ matrix.asset_name }}.${{ matrix.archive_ext }}
           else
-            tar -czvf release/libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }} -C release include libarray_op.a
+            tar -czvf release/${{ matrix.asset_name }}.${{ matrix.archive_ext }} -C release include libarray_op.a
           fi
         shell: bash
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: release/${{ matrix.asset_name }}.${{ matrix.archive_ext }}
+
+  create_release:
+    name: "Create GitHub Release"
+    runs-on: ubuntu-latest
+    needs: compile_build
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Download Artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          path: release
+
+      - name: Calculate Next Tag
+        id: calculate_tag
+        run: |
+          # Get the latest tag
+          LAST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+
+          # Extract major, minor, and patch parts
+          MAJOR=$(echo "$LAST_TAG" | cut -d '.' -f 1 | tr -d 'v')
+          MINOR=$(echo "$LAST_TAG" | cut -d '.' -f 2)
+          PATCH=$(echo "$LAST_TAG" | cut -d '.' -f 3)
+
+          # Increment the minor part
+          if [[ "$LAST_TAG" == "v0.0.0" ]]; then
+            MINOR=1
+          else
+            MINOR=$((MINOR + 1))
+          fi
+
+          # Construct the new tag
+          NEW_TAG="v${MAJOR}.${MINOR}.${{ github.run_number }}"
+
+          # Output the new tag
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo "New tag: $NEW_TAG"
 
       - name: "Create Release"
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.calculate_tag.outputs.new_tag }}
-          release_name: "Release ${{ steps.calculate_tag.outputs.new_tag }}"
+          tag_name: ${{ env.NEW_TAG }}
+          release_name: "Release ${{ env.NEW_TAG }}"
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Upload Release Asset"
+      - name: "Upload Release Assets"
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
-          asset_name: libarray_op_${{ matrix.asset_name }}.${{ matrix.archive_ext }}
+          asset_path: release/**/*.tar.gz
           overwrite: true
